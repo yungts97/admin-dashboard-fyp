@@ -1,9 +1,9 @@
-import ContentCardContainer from 'containers/ContentCardContainer'
+import ContentCardContainer from 'containers/Content/ContentCardContainer'
 import React from 'react'
 
 const TestDashBoard = () => {
   return (
-    <div className="flex">
+    <div className="flex flex-wrap">
       <div className="w-full sm:w-1/2 xl:w-1/3">
         <ContentCardContainer>
           <div className="flex items-center justify-between mb-6">

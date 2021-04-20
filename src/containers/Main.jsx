@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import NavSideBar from 'components/NavSideBar'
 import Header from 'components/Header'
-import Content from 'containers/Content'
+import Content from 'containers/Content/Content'
 import TestDashBoard from 'containers/TestDashBoard'
 import Hello from 'components/Hello'
 
