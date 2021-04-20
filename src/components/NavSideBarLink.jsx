@@ -1,19 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 export default function NavSideBarLink ({
   linkDescription = '',
-  isActive = false,
   iconSVGPath = undefined,
   url
 }) {
+  const location = useLocation()
+
   return (
     <Link
       className={`w-full font-thin uppercase p-4 my-2 flex items-center transition-colors duration-200 justify-start
-      ${isActive
+      ${location.pathname === url
       ? 'text-blue-500 bg-gradient-to-r from-white to-blue-100 border-r-4 border-blue-500 dark:from-gray-700 dark:to-gray-800'
-      : 'text-gray-500 dark:text-gray-200 hover:text-blue-500'}`}
+      : 'hover:text-blue-500 text-gray-500 dark:text-gray-200 dark:hover:bg-gray-800'}`}
       to={url}
     >
       <span className="text-left">
@@ -34,7 +35,6 @@ export default function NavSideBarLink ({
 
 NavSideBarLink.propTypes = {
   linkDescription: PropTypes.string.isRequired,
-  isActive: PropTypes.bool.isRequired,
   iconSVGPath: PropTypes.element.isRequired,
   url: PropTypes.string.isRequired
 }
