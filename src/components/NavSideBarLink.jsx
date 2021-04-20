@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 export default function NavSideBarLink ({
   linkDescription = '',
@@ -8,12 +9,12 @@ export default function NavSideBarLink ({
   url
 }) {
   return (
-    <a
+    <Link
       className={`w-full font-thin uppercase p-4 my-2 flex items-center transition-colors duration-200 justify-start
       ${isActive
       ? 'text-blue-500 bg-gradient-to-r from-white to-blue-100 border-r-4 border-blue-500 dark:from-gray-700 dark:to-gray-800'
       : 'text-gray-500 dark:text-gray-200 hover:text-blue-500'}`}
-      href={url}
+      to={url}
     >
       <span className="text-left">
         <svg
@@ -27,7 +28,7 @@ export default function NavSideBarLink ({
         </svg>
       </span>
       <span className="mx-4 text-sm font-normal">{linkDescription}</span>
-    </a>
+    </Link>
   )
 }
 
