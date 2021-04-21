@@ -13,8 +13,8 @@ export default function NavSideBarLink ({
     <Link
       className={`w-full font-thin uppercase p-4 my-2 flex items-center transition-colors duration-200 justify-start
       ${location.pathname === url
-          ? 'text-purple-500 bg-gradient-to-r from-white to-purple-100 border-r-4 border-purple-500 dark:from-gray-700 dark:to-gray-800'
-          : 'hover:text-purple-500 text-gray-500 dark:text-gray-200 dark:hover:text-purple-500'}`}
+          ? 'text-indigo-500 bg-gradient-to-r from-white to-indigo-100 border-r-4 border-indigo-500 dark:from-gray-700 dark:to-gray-800'
+          : 'hover:text-indigo-500 text-gray-500 dark:text-gray-200 dark:hover:text-indigo-500'}`}
       to={url}
     >
       <span className="text-left">

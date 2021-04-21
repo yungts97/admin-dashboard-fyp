@@ -26,7 +26,7 @@ export default function NavSideBar () {
                 <HomeIcon className="h-5 w-5"/>
               }
               linkDescription={'Hello'}
-              url={'/hello'}
+              url={'/home'}
               />
             <NavSideBarLink
               iconSVG={

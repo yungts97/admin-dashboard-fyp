@@ -42,7 +42,7 @@ const ThemeSwitch = () => {
             onClick={changeTheme}
             className='outline-none focus:outline-none right-4 duration-200 ease-in absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer checked:right-0'
           />
-          <label htmlFor='Purple' className={`block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer ${checked ? 'bg-purple-500' : ''}`}></label>
+          <label htmlFor='Purple' className={`block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer ${checked ? 'bg-indigo-500' : ''}`}></label>
         </div>
       </div>
     </div>

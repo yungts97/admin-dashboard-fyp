@@ -1,4 +1,5 @@
-import axios from 'axios'
+import Axios from 'axios'
+import * as ConfigGenerator from './ConfigGenerator'
 
 export const BASE_URL = 'https://healthapp.online'
 
@@ -7,43 +8,128 @@ export const REQUESTTYPES = {
   GET: 'get'
 }
 
-export class HttpRequest {
-  constructor (url, requestType, body = undefined) {
-    this.url = url
-    this.requestType = requestType
-    this.body = body
-  }
-
-  async makeRequest () {
-    if (!!this.requestType || !!this.url) {
-      throw Error('Request or URL cannot be empty')
-    }
-
-    if (this.requestType === REQUESTTYPES.POST && !!this.body) {
-      throw Error('Post Request must have request body')
-    }
-
-    const responseObj = {
-      data: undefined,
-      error: false,
-      message: undefined
-    }
-
-    try {
-      let response
-      switch (this.requestType) {
-        case REQUESTTYPES.POST:
-          response = await axios.post(this.url, this.body)
-          break
-        case REQUESTTYPES.GET:
-          response = await axios.get(this.url)
-          break
-        default:
-          throw Error('Request Type not supported')
+/**
+ * Private function used to make Axios Request
+ * @param {Object} httpConfig Provide a HTTP Configuration Object.
+ */
+async function makeAxiosRequest (httpConfig) {
+  const data = await Axios(httpConfig)
+    .then((response) => {
+      const res = response.status === 200 ? response.data : null
+      return res // 200 if okay
+    })
+    .catch((e) => {
+      if (e.message === 'Network Error') {
+        console.log('Unable to reach Server')
+      } else {
+        console.log('Error Response: ', e.response)
       }
-      return { ...responseObj, data: response.data, message: 'ok' }
-    } catch (error) {
-      return { ...responseObj, error: true, message: error.toString() }
+      return null
+    })
+  return data
+}
+
+/**
+ * Private function used to make Axios Request (different version that includes outputting errors and messages from server)
+ * @param {Object} httpConfig Provide a HTTP Configuration Object.
+ */
+async function makeV2AxiosRequest (httpConfig) {
+  const returndata = {
+    error: false,
+    data: undefined,
+    message: ''
+  }
+  const data = await Axios(httpConfig)
+    .then((response) => {
+      const res = response.status === 200 ? response.data : null
+      return { ...returndata, data: res, message: 'OK' } // 200 if okay
+    })
+    .catch((e) => {
+      console.log('Error Response: ', e.response)
+      let message
+      if (e.message === 'Network Error' || e.code === 'ECONNABORTED') {
+        message = 'Unable to reach Server. Please try again later.'
+      }
+      return { ...returndata, error: true, message: message ?? e.response.data.detail }
+    })
+  return data
+}
+
+const HttpRequest = {
+  Post: {
+    Login: async (email, password) => {
+      // generate a http request config for http request
+      const HttpRequestConfig = ConfigGenerator.LoginHttpRequestConfig(
+        email,
+        password
+      )
+      return await makeV2AxiosRequest(HttpRequestConfig)
+    },
+    SignUp: async (email, password) => {
+      // generate a http request config for http request
+      const HttpRequestConfig = ConfigGenerator.SignUpHttpRequestConfig(
+        email,
+        password
+      )
+      return await makeV2AxiosRequest(HttpRequestConfig)
+    }
+  },
+  Get: {
+    GetFoods: async (skip = 0) => {
+      // generate a http request config for http request
+      const HttpRequestConfig = ConfigGenerator.GetFoodsHttpRequestConfig(skip)
+
+      return await makeAxiosRequest(HttpRequestConfig)
+    },
+    GetUserMe: async (token) => {
+      const HttpRequestConfig = ConfigGenerator.GetUserDetailsMeHttpRequestConfig(
+        token
+      )
+
+      return await makeV2AxiosRequest(HttpRequestConfig)
     }
   }
 }
+
+export default HttpRequest
+
+// export class HttpRequest {
+//   constructor (url, requestType, body = undefined) {
+//     this.url = url
+//     this.requestType = requestType
+//     this.body = body
+//   }
+
+//   async makeRequest () {
+//     if (!!this.requestType || !!this.url) {
+//       throw Error('Request or URL cannot be empty')
+//     }
+
+//     if (this.requestType === REQUESTTYPES.POST && !!this.body) {
+//       throw Error('Post Request must have request body')
+//     }
+
+//     const responseObj = {
+//       data: undefined,
+//       error: false,
+//       message: undefined
+//     }
+
+//     try {
+//       let response
+//       switch (this.requestType) {
+//         case REQUESTTYPES.POST:
+//           response = await axios.post(this.url, this.body)
+//           break
+//         case REQUESTTYPES.GET:
+//           response = await axios.get(this.url)
+//           break
+//         default:
+//           throw Error('Request Type not supported')
+//       }
+//       return { ...responseObj, data: response.data, message: 'ok' }
+//     } catch (error) {
+//       return { ...responseObj, error: true, message: error.toString() }
+//     }
+//   }
+// }

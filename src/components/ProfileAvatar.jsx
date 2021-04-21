@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const ProfileAvatar = ({ imageSrc }) => {
   return (
-    <div className="relative p-1 flex items-center justify-end w-1/4 ml-5 mr-4 sm:mr-0 sm:right-auto">
+    <div className="relative p-1 flex items-center justify-end sm:mr-0 sm:right-auto">
       <a href="#" className="block relative">
         <img
           alt="profil"
