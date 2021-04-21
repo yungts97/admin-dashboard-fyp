@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 export class LineChartDataset {
   constructor (label, data, color) {
-    this.label = label
+    this.label = label || 'My Chart'
     this.fill = false
     this.lineTension = 0.1
     this.backgroundColor = '#fff'
@@ -19,7 +19,7 @@ export class LineChartDataset {
     this.pointRadius = 3
     this.spanGaps = true
     this.pointHitRadius = 10
-    this.data = data
+    this.data = data || []
   }
 }
 
@@ -34,7 +34,7 @@ export class LineChartData {
 const DUMMYDATA = new LineChartData(
   ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'], [
     new LineChartDataset('My First dataset', [65, 59, 80, 81, 56, undefined, 150, 100], 'rgba(75,50,192,1)'),
-    new LineChartDataset('My Second dataset', [50, 70, 20, 10, undefined, 40, 20, 45])
+    new LineChartDataset('My Second dataset', [50, 80, 20, 10, undefined, 40, 20, 45])
   ]
 )
 
@@ -44,7 +44,7 @@ const OPTIONS = {
 
 const LineGraphChart = ({ data, options }) => {
   return (
-    <div className="dark:bg-gray-300 rounded-2xl h-full w-full">
+    <div className="dark:bg-gray-300 relative rounded-2xl h-full w-full">
       <Line data={data || DUMMYDATA} options={options || OPTIONS}/>
     </div>
   )
