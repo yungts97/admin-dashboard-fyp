@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Menu, Transition } from '@headlessui/react'
+import ThemeSwitch from 'components/ThemeSwitch'
 import {
   LogoutIcon
 } from '@heroicons/react/outline'
@@ -8,16 +9,17 @@ import {
 const ProfileAvatar = ({ imageSrc }) => {
   return (
     <div className="relative p-1 flex items-center justify-end w-1/4 ml-5 mr-4 sm:mr-0 sm:right-auto">
+      <ThemeSwitch />
       <Menu as="div" className="relative inline-block">
         {({ open }) => (
           <>
-              <Menu.Button className="inline-flex justify-center align-middle rounded-full focus:outline-none">
-                <img
-                  alt="profil"
-                  src={imageSrc}
-                  className="mx-auto object-cover rounded-full h-10 w-10 "
-                />
-              </Menu.Button>
+            <Menu.Button className="inline-flex h-10 w-10 justify-center align-middle rounded-full focus:outline-none">
+              <img
+                alt="profil"
+                src={imageSrc}
+                className="object-cover rounded-full h-10 w-10"
+              />
+            </Menu.Button>
             <Transition
               show={open}
               as={Fragment}
@@ -37,8 +39,7 @@ const ProfileAvatar = ({ imageSrc }) => {
                     {({ active }) => (
                       <button
                         onClick={() => { console.log('Logged Out') }}
-                        className={`${
-                          active ? 'text-white bg-purple-400' : 'text-red-700 dark:text-red-500'
+                        className={`${active ? 'text-white bg-purple-400' : 'text-red-700 dark:text-red-500'
                           } group flex rounded-md items-center w-full px-2 py-2 text-sm focus:outline-none transition-colors duration-100 dark:bg-gray-700`}
                       >
                         <LogoutIcon
