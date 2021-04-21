@@ -8,6 +8,7 @@ import {
   HomeIcon
 } from '@heroicons/react/solid'
 import React from 'react'
+import { ReactComponent as AppLogo } from 'svgs/applogo.svg'
 
 export default function NavSideBar () {
   return (
@@ -18,6 +19,7 @@ export default function NavSideBar () {
           <p className="font-bold text-xl text-gray-500 dark:text-white px-3">
             HealthOnline
           </p>
+          <AppLogo className="h-10 w-10" />
         </div>
         <nav className="mt-6">
           <div>
