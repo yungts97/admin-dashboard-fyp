@@ -1,4 +1,6 @@
 import NavSideBarLink from 'components/NavSideBarLink'
+import ThemeSwitch from 'components/ThemeSwitch'
+
 import {
   ChartBarIcon,
   BriefcaseIcon,
@@ -13,6 +15,9 @@ export default function NavSideBar () {
       <div className="bg-white h-full rounded-2xl dark:bg-gray-700">
         <div className="flex items-center justify-center pt-6">
           <AppLogo className="h-10 w-10" />
+          <p className="font-bold text-xl text-gray-500 dark:text-white px-3">
+            HealthOnline
+          </p>
         </div>
         <nav className="mt-6">
           <div>
@@ -39,6 +44,7 @@ export default function NavSideBar () {
             />
           </div>
         </nav>
+        <ThemeSwitch/>
       </div>
     </div>
   )

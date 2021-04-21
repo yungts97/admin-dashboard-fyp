@@ -5,6 +5,7 @@ import Header from 'components/Header'
 import Content from 'containers/Content/Content'
 import TestDashBoard from 'containers/TestDashBoard'
 import Hello from 'components/Hello'
+import Login from 'pages/Login'
 
 export default function Main () {
   return (
@@ -21,6 +22,9 @@ export default function Main () {
                 </Route>
                 <Route path="/dashboard">
                   <TestDashBoard />
+                </Route>
+                <Route path="/login">
+                  <Login />
                 </Route>
               </Switch>
             </Content>
