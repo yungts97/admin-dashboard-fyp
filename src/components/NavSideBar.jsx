@@ -1,6 +1,4 @@
 import NavSideBarLink from 'components/NavSideBarLink'
-import ThemeSwitch from 'components/ThemeSwitch'
-
 import {
   ChartBarIcon,
   BriefcaseIcon,
@@ -44,7 +42,6 @@ export default function NavSideBar () {
             />
           </div>
         </nav>
-        <ThemeSwitch/>
       </div>
     </div>
   )
