@@ -1,37 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import classNames from 'classnames'
 
 const ThemeSwitch = () => {
   const THEME = { DARK: true, LIGHT: false }
   const [checked, setChecked] = useState(localStorage.darkTheme === 'true')
-
-  const labelClasses = classNames(
-    'block',
-    'overflow-hidden',
-    'h-6',
-    'rounded-full',
-    'bg-gray-300',
-    'cursor-pointer',
-    { 'bg-purple-500': checked }
-  )
-
-  const checkboxClasses = classNames(
-    'outline-none',
-    'focus:outline-none',
-    'right-4',
-    'duration-200',
-    'ease-in',
-    'absolute',
-    'block',
-    'w-6',
-    'h-6',
-    'rounded-full',
-    'bg-white',
-    'border-4',
-    'appearance-none',
-    'cursor-pointer',
-    'checked:right-0'
-  )
 
   const changeTheme = () => {
     setChecked(!checked)
@@ -69,9 +40,9 @@ const ThemeSwitch = () => {
             id="Purple"
             checked={checked}
             onClick={changeTheme}
-            className={checkboxClasses}
+            className='outline-none focus:outline-none right-4 duration-200 ease-in absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer checked:right-0'
           />
-          <label htmlFor="Purple" className={labelClasses}></label>
+          <label htmlFor='Purple' className={`block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer ${checked ? 'bg-purple-500' : ''}`}></label>
         </div>
       </div>
     </div>

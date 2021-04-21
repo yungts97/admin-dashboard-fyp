@@ -1,6 +1,7 @@
 import React from 'react'
 import ProfileAvatar from 'components/ProfileAvatar'
 import { ReactComponent as SearchLogo } from 'svgs/search.svg'
+import { ReactComponent as Avatar } from 'svgs/avatar_f.svg'
 
 export default function Header () {
   return (
@@ -19,7 +20,7 @@ export default function Header () {
 
           </div>
         </div>
-        <ProfileAvatar/>
+        <ProfileAvatar imageSrc={Avatar}/>
       </div>
     </div>
   </header>

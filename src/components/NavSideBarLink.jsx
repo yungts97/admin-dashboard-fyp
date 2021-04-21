@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link, useLocation } from 'react-router-dom'
-// import classNames from 'classnames'
 
 export default function NavSideBarLink ({
   linkDescription = '',
@@ -9,32 +8,6 @@ export default function NavSideBarLink ({
   url
 }) {
   const location = useLocation()
-
-  // const baseClasses = classNames(
-  //   'w-full',
-  //   'font-thin',
-  //   'uppercase',
-  //   'flex',
-  //   'items-center',
-  //   'p-4',
-  //   'my-2',
-  //   'transition-colors',
-  //   'duration-200',
-  //   'justify-start'
-  // )
-
-  // const statusClasses = location.pathname === url
-  //   ? classNames(
-  //     'text-purple-500',
-  //     'bg-gradient-to-r',
-  //     'from-white',
-  //     'to-purple-100',
-  //     'border-r-4',
-  //     'border-purple-500',
-  //     'dark:from-gray-700',
-  //     'dark:to-gray-800'
-  //   )
-  //   : classNames('text-gray-500', 'dark:text-gray-200', 'hover:text-purple-500', 'dark:hover:text-purple-500')
 
   return (
     <Link

@@ -6,9 +6,7 @@
     "checkJs": true,
     "jsx": "react",
     "paths": {
-      "assets/*":["assets/*"],
-      "components/*": ["components/*"],
-      "pages/*": ["pages/*"]
+      
     }
   },
   "include": ["src/**/*"],
