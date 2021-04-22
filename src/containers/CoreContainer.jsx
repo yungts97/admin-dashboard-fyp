@@ -4,6 +4,7 @@ import NavSideBar from 'components/NavSideBar'
 import Header from 'components/Header'
 import Content from 'containers/Content/Content'
 import TestDashBoard from 'containers/TestDashBoard'
+import ChartsDashboard from 'containers/ChartsDashBoard'
 import Hello from 'components/Hello'
 
 const CoreContainer = () => {
@@ -20,6 +21,11 @@ const CoreContainer = () => {
                 exact
                 path="/dashboard"
                 component={TestDashBoard}
+              />
+              <ProtectedRoute
+                exact
+                path="/charts"
+                component={ChartsDashboard}
               />
             </Content>
           </div>

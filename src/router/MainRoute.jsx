@@ -15,7 +15,7 @@ export default function MainRoute () {
       <Router>
         <Switch>
           <Route exact path="/" component={AuthContainer} />
-          <Route exact path={['/home', '/dashboard']} component={CoreContainer} />
+          <Route exact path={['/home', '/dashboard', '/charts']} component={CoreContainer} />
           <Route
             path="*"
             render={({ location }) => (

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import HttpHelper from 'utilities/HttpHelper'
 import { ReactComponent as AppLogo } from 'svgs/applogo.svg'
+import { ReactComponent as Spinner } from 'svgs/spinner.svg'
 import { useAuthProvider, AuthProviderDispatchMethodConstants } from 'providers/AuthProvider'
+import useLoading from 'utilities/customHooks/useLoading'
 
 const Login = (props) => {
   const [loginDetail, setLoginDetail] = useState({
@@ -9,22 +11,35 @@ const Login = (props) => {
     password: ''
   })
   const [, dispatch] = useAuthProvider()
+  const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const submitHandler = async (e) => {
     e.preventDefault()
     // const res = await HttpHelper.Get.GetFoods()
     // console.log(res)
-    const res = await HttpHelper.Post.Login(loginDetail.email, loginDetail.password)
-    if (!res?.error && res?.data.access_token) {
-      const token = res.data.access_token
-      const payload = {
-        token: token,
-        isAuthenticated: true
+    setError(false)
+    try {
+      const res = await HttpHelper.Post.Login(loginDetail.email, loginDetail.password)
+      if (!res?.error && res?.data.access_token) {
+        const token = res.data.access_token
+        const payload = {
+          token: token,
+          isAuthenticated: true
+        }
+        localStorage.setItem('token', token)
+        dispatch({ type: AuthProviderDispatchMethodConstants.SAVE_AUTH, payload: payload })
+      } else {
+        throw Error(res.message)
       }
-      localStorage.setItem('token', token)
-      dispatch({ type: AuthProviderDispatchMethodConstants.SAVE_AUTH, payload: payload })
+    } catch (error) {
+      console.log(error)
+      setErrorMessage(error.toString())
+      setError(true)
     }
   }
+
+  const [handleLoginSubmit, loadingLogin] = useLoading(submitHandler)
 
   return (
     <div className="min-h-screen flex items-stretch text-white ">
@@ -68,12 +83,13 @@ const Login = (props) => {
               HealthOnline
             </span>
           </div>
-          <form onSubmit={submitHandler} className="sm:w-2/3 w-full px-4 lg:px-0 mx-auto">
+          <form onSubmit={handleLoginSubmit} className="sm:w-2/3 w-full px-4 lg:px-0 mx-auto">
             <div className="pb-2 pt-4">
               <input
                 type="email"
                 name="email"
                 id="email"
+                required={true}
                 placeholder="Email"
                 className="block w-full p-4 text-lg rounded-sm bg-black focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 onChange={(e) =>
@@ -97,10 +113,13 @@ const Login = (props) => {
               <a href="#">Forgot your password?</a>
             </div>
             <div className="px-4 pb-2 pt-4">
-              <button className="uppercase block w-full lg:p-2 p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">
-                sign in
+              <button className="uppercase flex flex-row justify-center align-middle h-12 w-full lg:p-2 p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">
+                {loadingLogin
+                  ? <Spinner className="h-5 animate-spin mr-3 self-center"/>
+                  : <span className="self-center">Sign in</span>}
               </button>
             </div>
+            {error && <p className="text-red-400">{errorMessage}</p>}
           </form>
         </div>
       </div>

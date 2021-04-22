@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { Switch } from '@headlessui/react'
+import {
+  SunIcon,
+  MoonIcon
+} from '@heroicons/react/solid'
 
 const ThemeSwitch = () => {
   const THEME = { DARK: true, LIGHT: false }
@@ -29,23 +34,24 @@ const ThemeSwitch = () => {
   }, [])
 
   return (
-    <div className="w-full flex p-4 justify-items-center flex-col">
-      <p className="dark:text-gray-200 text-gray-500 font-medium mb-2">Preference</p>
-      <div className="flex flex-row w-full justify-between p-2">
-        <span className="dark:text-gray-200 text-gray-500 font-normal mr-4">Dark Theme</span>
-        <div className="relative inline-block w-10 mr-2 align-middle select-none">
-          <input
-            type="checkbox"
-            name="toggle"
-            id="Purple"
+    <>
+      <div className="flex flex-row p-2">
+        {checked ? <SunIcon className="h-5 w-5 mr-1 text-yellow-500"/> : <MoonIcon className="h-5 w-5 mr-1 text-gray-400"/>}
+        <div className="mr-1">
+          <Switch
             checked={checked}
-            onClick={changeTheme}
-            className='outline-none focus:outline-none right-4 duration-200 ease-in absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer checked:right-0'
-          />
-          <label htmlFor='Purple' className={`block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer ${checked ? 'bg-indigo-500' : ''}`}></label>
+            onChange={changeTheme}
+            className={`${checked ? 'bg-indigo-500' : 'bg-gray-200'
+              } relative inline-flex items-center h-4 rounded-full w-8 transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+          >
+            <span
+              className={`${checked ? 'translate-x-4' : 'translate-x-0'
+                } inline-block w-4 h-4 transform bg-white rounded-full transition ease-in-out duration-200`}
+            />
+          </Switch>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
