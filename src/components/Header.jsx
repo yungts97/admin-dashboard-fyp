@@ -8,9 +8,9 @@ export default function Header () {
   return (
     <header className="w-full shadow-lg bg-white dark:bg-gray-700 items-center h-16 rounded-2xl z-20">
     <div className="relative z-20 flex flex-col justify-center h-full px-3 mx-auto flex-center">
-      <div className="relative items-center pl-1 flex w-full lg:max-w-68 sm:pr-2 sm:ml-0">
-        <div className="container relative left-0 z-50 flex w-3/4 h-full">
-          <div className="relative flex items-center w-full lg:w-64 h-full group">
+      <div className="relative pl-1 flex flex-row w-full justify-between sm:pr-2 sm:ml-0">
+        <div className="container relative left-0 z-50 flex w-2/3 lg:w-64 h-full">
+          <div className="relative flex items-center w-full h-full group">
 
             <SearchLogo/>
             <input
@@ -21,7 +21,7 @@ export default function Header () {
 
           </div>
         </div>
-        <div className="container relative flex w-1/4 h-full items-center justify-end">
+        <div className="container relative flex flex-row w-1/4 h-full items-center justify-end">
           <ThemeSwitch />
           <ProfileAvatar imageSrc={avatar}/>
         </div>

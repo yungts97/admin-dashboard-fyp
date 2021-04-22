@@ -36,7 +36,7 @@ const ThemeSwitch = () => {
   return (
     <>
       <div className="flex flex-row p-2">
-        <div className="mr-1">
+        <div className="mr-0">
           <Switch
             checked={checked}
             onChange={changeTheme}
@@ -46,7 +46,7 @@ const ThemeSwitch = () => {
 
             {checked ? <p className="text-white text-xs mx-2">Dark</p> : <span className="text-white text-xs transform translate-x-8">Light</span>}
             <span
-              className={`${checked ? 'translate-x-0 bg-white' : '-translate-x-6 bg-white'
+              className={`${checked ? '-translate-x-1 bg-white' : '-translate-x-6 bg-white'
                 } flex w-6 h-6 transform rounded-full transition ease-in-out duration-200 justify-center items-center`}
             >
             {checked ? <MoonIcon className="h-6 w-6  text-gray-800"/> : <SunIcon className="h-6 w-6 text-yellow-400"/>}

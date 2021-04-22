@@ -117,10 +117,10 @@ const Login = (props) => {
               <a href="#">Forgot your password?</a>
             </div>
             <div className="px-4 pb-2 pt-4">
-              <button className="uppercase flex flex-row justify-center align-middle h-12 w-full lg:p-2 p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">
+              <button className="uppercase flex flex-row justify-center items-center h-12 w-full lg:p-2 p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">
                 {loadingLogin
-                  ? <Spinner className="h-5 animate-spin mr-3 self-center"/>
-                  : <span className="self-center">Sign in</span>}
+                  ? <Spinner className="h-5 animate-spin mr-3"/>
+                  : <span>Sign in</span>}
               </button>
             </div>
             {error && <p className="text-red-400">{errorMessage}</p>}
