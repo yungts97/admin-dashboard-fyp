@@ -5,7 +5,7 @@ import GridContentCardContainer from 'containers/Content/GridContentCardContaine
 const ChartsDashboard = () => {
   return (
     <div className="grid md:grid-cols-2 md:grid-rows-2 gap-4">
-      <div className="col-span-1 md:col-span-2">
+      <div className="col-span-1 md:col-span-2 h-96">
         <GridContentCardContainer>
           <GraphChart />
         </GridContentCardContainer>

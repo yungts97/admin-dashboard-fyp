@@ -23,6 +23,10 @@ const Login = (props) => {
       const res = await HttpHelper.Post.Login(loginDetail.email, loginDetail.password)
       if (!res?.error && res?.data.access_token) {
         const token = res.data.access_token
+        const data = await HttpHelper.Get.GetUserMe(token)
+        if (data.data.account_type === 0) {
+          throw Error('Incorrect username or password')
+        }
         const payload = {
           token: token,
           isAuthenticated: true

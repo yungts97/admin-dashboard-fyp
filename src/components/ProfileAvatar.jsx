@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Menu, Transition } from '@headlessui/react'
-import ThemeSwitch from 'components/ThemeSwitch'
+import LogoutModal from 'components/LogoutModal'
 import {
   LogoutIcon
 } from '@heroicons/react/outline'
@@ -10,14 +10,19 @@ import { useAuthProvider, AuthProviderDispatchMethodConstants } from 'providers/
 const ProfileAvatar = ({ imageSrc }) => {
   const [, dispatch] = useAuthProvider()
 
+  const [show, setShow] = useState(false)
+
+  const toggleModal = () => {
+    setShow(!show)
+  }
+
   const logout = () => {
     localStorage.removeItem('token')
     dispatch({ type: AuthProviderDispatchMethodConstants.RESET })
   }
 
   return (
-    <div className="relative p-1 flex items-center justify-end w-1/4 ml-5 mr-4 sm:mr-0 sm:right-auto">
-      <ThemeSwitch />
+    <div className="relative p-1  ml-5 mr-4 sm:mr-0 sm:right-auto">
       <Menu as="div" className="relative inline-block">
         {({ open }) => (
           <>
@@ -40,15 +45,15 @@ const ProfileAvatar = ({ imageSrc }) => {
             >
               <Menu.Items
                 static
-                className="absolute right-0 w-32 mt-2 origin-top-right bg-white dark:bg-gray-700 rounded-md shadow-xl focus:outline-none"
+                className="absolute right-0 w-32 top-14 origin-top-right bg-white dark:bg-gray-600 rounded-md shadow-xl focus:outline-none"
               >
                 <div className="px-1 py-1 ">
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={logout}
-                        className={`${active ? 'text-white bg-purple-400' : 'text-red-600 dark:text-red-400'
-                          } group flex rounded-md items-center w-full px-2 py-2 text-sm focus:outline-none transition-colors duration-100 dark:bg-gray-700`}
+                        onClick={toggleModal}
+                        className={`${active ? 'text-red-500 dark:bg-gray-700 bg-gray-100' : 'text-red-400'
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm font-medium focus:outline-none transition-colors duration-100 dark:bg-gray-600`}
                       >
                         <LogoutIcon
                           className="w-5 h-5 mr-2"
@@ -64,6 +69,7 @@ const ProfileAvatar = ({ imageSrc }) => {
           </>
         )}
       </Menu>
+      <LogoutModal show={show} toggleModal={toggleModal} logout={logout}/>
     </div>
   )
 }

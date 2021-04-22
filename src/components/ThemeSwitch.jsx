@@ -36,20 +36,25 @@ const ThemeSwitch = () => {
   return (
     <>
       <div className="flex flex-row p-2">
-        {checked ? <SunIcon className="h-5 w-5 mr-1 text-yellow-500"/> : <MoonIcon className="h-5 w-5 mr-1 text-gray-400"/>}
         <div className="mr-1">
           <Switch
             checked={checked}
             onChange={changeTheme}
-            className={`${checked ? 'bg-indigo-500' : 'bg-gray-200'
-              } relative inline-flex items-center h-4 rounded-full w-8 transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+            className={`${checked ? 'bg-gray-800' : 'bg-gray-400'
+              } relative inline-flex items-center h-7 rounded-full w-16 transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
           >
+
+            {checked ? <p className="text-white text-xs mx-2">Dark</p> : <span className="text-white text-xs transform translate-x-8">Light</span>}
             <span
-              className={`${checked ? 'translate-x-4' : 'translate-x-0'
-                } inline-block w-4 h-4 transform bg-white rounded-full transition ease-in-out duration-200`}
-            />
+              className={`${checked ? 'translate-x-0 bg-white' : '-translate-x-6 bg-white'
+                } flex w-6 h-6 transform rounded-full transition ease-in-out duration-200 justify-center items-center`}
+            >
+            {checked ? <MoonIcon className="h-6 w-6  text-gray-800"/> : <SunIcon className="h-6 w-6 text-yellow-400"/>}
+
+            </span>
           </Switch>
         </div>
+
       </div>
     </>
   )
