@@ -22,7 +22,7 @@ const ProfileAvatar = ({ imageSrc }) => {
   }
 
   return (
-    <div className="relative p-1 ml-5 mr-4 sm:mr-0 sm:right-auto">
+    <div className="relative p-1 md:ml-5 mr-0 md:mr-4">
       <Menu as="div" className="relative inline-block">
         {({ open }) => (
           <>

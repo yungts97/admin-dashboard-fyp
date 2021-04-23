@@ -54,7 +54,6 @@ const ThemeSwitch = () => {
             </span>
           </Switch>
         </div>
-
       </div>
     </>
   )
