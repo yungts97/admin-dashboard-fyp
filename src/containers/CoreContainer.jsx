@@ -6,6 +6,7 @@ import Content from 'containers/Content/Content'
 import TestDashBoard from 'containers/TestDashBoard'
 import ChartsDashboard from 'containers/ChartsDashBoard'
 import Hello from 'components/Hello'
+import PatientsBoard from 'containers/PatientsBoard'
 
 const CoreContainer = () => {
   return (
@@ -26,6 +27,11 @@ const CoreContainer = () => {
                 exact
                 path="/charts"
                 component={ChartsDashboard}
+              />
+              <ProtectedRoute
+                exact
+                path="/patients"
+                component={PatientsBoard}
               />
             </Content>
           </div>

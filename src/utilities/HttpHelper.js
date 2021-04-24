@@ -87,6 +87,13 @@ const HttpRequest = {
       )
 
       return await makeV2AxiosRequest(HttpRequestConfig)
+    },
+    GetAllClinicianAssignments: async (token) => {
+      const HttpRequestConfig = ConfigGenerator.GetClinicianAssignmentsHttpRequestConfig(
+        token
+      )
+
+      return await makeV2AxiosRequest(HttpRequestConfig)
     }
   }
 }

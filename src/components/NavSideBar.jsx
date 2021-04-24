@@ -2,7 +2,8 @@ import NavSideBarLink from 'components/NavSideBarLink'
 import {
   ChartBarIcon,
   BriefcaseIcon,
-  HomeIcon
+  HomeIcon,
+  UsersIcon
 } from '@heroicons/react/solid'
 import React from 'react'
 import { ReactComponent as AppLogo } from 'svgs/applogo.svg'
@@ -39,6 +40,13 @@ export default function NavSideBar () {
               }
               linkDescription={'Charts'}
               url={'/charts'}
+            />
+            <NavSideBarLink
+              iconSVG={
+                <UsersIcon className="h-5 w-5"/>
+              }
+              linkDescription={'Patients'}
+              url={'/patients'}
             />
           </div>
         </nav>
