@@ -7,12 +7,12 @@ module.exports = {
   },
   variants: {
     extend: {
-      backgroundColor: ["checked"],
-      borderColor: ["checked"],
-      inset: ["checked"],
-      zIndex: ["hover", "active"],
-      textColor: ["hover"],
-    },
+      backgroundColor: ['checked'],
+      borderColor: ['checked'],
+      inset: ['checked'],
+      zIndex: ['hover', 'active'],
+      textColor: ['hover']
+    }
   },
   plugins: []
 }

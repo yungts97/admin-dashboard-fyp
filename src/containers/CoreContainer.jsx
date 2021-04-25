@@ -33,6 +33,11 @@ const CoreContainer = () => {
                 path="/patients"
                 component={PatientsBoard}
               />
+              <ProtectedRoute
+                exact
+                path="/patients/:id"
+                component={Hello}
+              />
             </Content>
           </div>
         </div>

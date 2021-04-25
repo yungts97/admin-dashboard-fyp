@@ -83,6 +83,6 @@ export default function ListBoxSelector ({ onChange, data, selected }) {
 
 ListBoxSelector.propTypes = {
   onChange: PropTypes.func.isRequired,
-  data: PropTypes.object.isRequired,
-  selected: PropTypes.string.isRequired || PropTypes.number.isRequired
+  data: PropTypes.array.isRequired,
+  selected: PropTypes.string.isRequired
 }

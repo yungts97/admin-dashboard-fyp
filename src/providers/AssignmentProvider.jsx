@@ -78,7 +78,7 @@ export function AssignmentProvider ({ children }) {
       // @ts-ignore
       dispatch({ type: AssignmentProviderDispatchMethodConstants.RESETSTATE })
     }
-  }, [authState.userToken])
+  }, [authState.token])
 
   return (
     <AssignmentContext.Provider value={[state, dispatch]}>

@@ -21,7 +21,7 @@ export default function MainRoute () {
               <Route exact path="/" component={AuthContainer} />
               <Route
                 exact
-                path={['/home', '/dashboard', '/charts', '/patients']}
+                path={['/home', '/dashboard', '/charts', '/patients', '/patients/:id']}
                 component={CoreContainer}
               />
               <Route

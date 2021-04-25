@@ -97,3 +97,12 @@ export const GetClinicianAssignmentsHttpRequestConfig = (token) =>
     null,
     token
   )
+
+export const GetUserByIdHttpRequestConfig = (token, userid) =>
+  new Config(
+    Constant.METHOD.GET,
+    `${Constant.URL.USER}/${userid}`,
+    Constant.CONTENT_TYPE.JSON,
+    null,
+    token
+  )
