@@ -1,16 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const GridContentCardContainer = ({ children }) => {
+const GridContentCardContainer = ({ children, bgcolor }) => {
   return (
-    <div className="shadow-lg rounded-2xl p-2 bg-white dark:bg-gray-700 w-full h-full">
+    <div className={`shadow-lg rounded-2xl p-2 ${bgcolor ?? 'bg-white dark:bg-gray-700'}  w-full h-full`}>
       {children}
     </div>
   )
 }
 
 GridContentCardContainer.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  bgcolor: PropTypes.string
 }
 
 export default GridContentCardContainer

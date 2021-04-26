@@ -47,37 +47,6 @@ export const LoginHttpRequestConfig = (email, password) => {
   )
 }
 
-export const SignUpHttpRequestConfig = (email, password) => {
-  // create an instance of data
-  const body = {
-    email: email,
-    password: password
-  }
-
-  return new Config(
-    Constant.METHOD.POST,
-    Constant.URL.SIGNUP,
-    Constant.CONTENT_TYPE.JSON,
-    body
-  )
-}
-
-export const GetFoodsHttpRequestConfig = (skip) => {
-  // create body for http request
-  const params = {
-    skip: skip
-  }
-  // assign method to http request config
-  return new Config(
-    Constant.METHOD.GET,
-    Constant.URL.FOOD,
-    Constant.CONTENT_TYPE.JSON,
-    null,
-    null,
-    params
-  )
-}
-
 export const GetUserDetailsMeHttpRequestConfig = (token) =>
   // assign method to http request config
   new Config(
@@ -106,3 +75,78 @@ export const GetUserByIdHttpRequestConfig = (token, userid) =>
     null,
     token
   )
+
+// Get configuration to accept clinician assignment
+export const GetClinicianAcceptAssignmentHttpRequestConfig = (
+  assignmentid,
+  token
+) => {
+  const url = `${Constant.URL.CLINICIAN_ASSIGNMENTS}${assignmentid}/accept`
+  return new Config(
+    Constant.METHOD.GET,
+    url,
+    Constant.CONTENT_TYPE.JSON,
+    null,
+    token
+  )
+}
+
+// Get configuration to delete clinician assignment
+export const GetClinicianDeleteAssignmentHttpRequestConfig = (
+  assignmentid,
+  token
+) => {
+  const url = `${Constant.URL.CLINICIAN_ASSIGNMENTS}${assignmentid}/decline`
+  return new Config(
+    Constant.METHOD.GET,
+    url,
+    Constant.CONTENT_TYPE.JSON,
+    null,
+    token
+  )
+}
+
+// Get configuration to retrieve user Health Profile
+export const GetClinicianAssignedUserHealthProfileHttpRequestConfig = (
+  userid,
+  token
+) => {
+  const url = `${Constant.URL.CLINICIAN_ASSIGNED_USERS}${userid}/health-profile/`
+  return new Config(
+    Constant.METHOD.GET,
+    url,
+    Constant.CONTENT_TYPE.JSON,
+    null,
+    token
+  )
+}
+
+// Get configuration to retrieve user Health Records
+export const GetClinicianAssignedUserHealthRecordsHttpRequestConfig = (
+  userid,
+  token
+) => {
+  const url = `${Constant.URL.CLINICIAN_ASSIGNED_USERS}${userid}/health-records/`
+  return new Config(
+    Constant.METHOD.GET,
+    url,
+    Constant.CONTENT_TYPE.JSON,
+    null,
+    token
+  )
+}
+
+// Get configuration to retrieve user Meal Records
+export const GetClinicianAssignedUserMealRecordsHttpRequestConfig = (
+  userid,
+  token
+) => {
+  const url = `${Constant.URL.CLINICIAN_ASSIGNED_USERS}${userid}/meals/`
+  return new Config(
+    Constant.METHOD.GET,
+    url,
+    Constant.CONTENT_TYPE.JSON,
+    null,
+    token
+  )
+}

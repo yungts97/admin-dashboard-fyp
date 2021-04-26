@@ -5,8 +5,9 @@ import Header from 'components/Header'
 import Content from 'containers/Content/Content'
 import TestDashBoard from 'containers/TestDashBoard'
 import ChartsDashboard from 'containers/ChartsDashBoard'
-import Hello from 'components/Hello'
 import PatientsBoard from 'containers/PatientsBoard'
+import HomeBoard from 'containers/HomeBoard'
+import PatientDetailBoard from 'containers/PatientDetailBoard'
 
 const CoreContainer = () => {
   return (
@@ -17,7 +18,7 @@ const CoreContainer = () => {
           <div className="flex flex-col w-full pl-0 md:p-4 md:space-y-4">
             <Header />
             <Content>
-              <ProtectedRoute exact path="/home" component={Hello} />
+              <ProtectedRoute exact path="/home" component={HomeBoard} />
               <ProtectedRoute
                 exact
                 path="/dashboard"
@@ -36,7 +37,7 @@ const CoreContainer = () => {
               <ProtectedRoute
                 exact
                 path="/patients/:id"
-                component={Hello}
+                component={PatientDetailBoard}
               />
             </Content>
           </div>

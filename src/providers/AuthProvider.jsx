@@ -7,13 +7,15 @@ const AUTH_KEY = 'token'
 
 export const defaultAuthState = {
   token: localStorage.getItem(AUTH_KEY),
-  isAuthenticated: false
+  isAuthenticated: false,
+  profile: null
 }
 
 export const AuthProviderDispatchMethodConstants = {
   SAVE_AUTH: 'saveAuth',
   RESET: 'resetState',
-  UPDATE_ISAUTH: 'updateIsAuth'
+  UPDATE_ISAUTH: 'updateIsAuth',
+  SAVE_PROFILE: 'updateProfile'
 }
 
 const AuthContext = createContext(defaultAuthState)
@@ -38,6 +40,8 @@ export const AuthProvider = ({ children }) => {
       }
       // @ts-ignore
       dispatch({ type: AuthProviderDispatchMethodConstants.UPDATE_ISAUTH, payload: true })
+      // @ts-ignore
+      dispatch({ type: AuthProviderDispatchMethodConstants.SAVE_PROFILE, payload: data.data })
     }
   }
 
@@ -82,9 +86,14 @@ function reducerAuth (state, action) {
           ...state,
           isAuthenticated: action.payload
         }
+      case AuthProviderDispatchMethodConstants.SAVE_PROFILE:
+        return {
+          ...state,
+          profile: action.payload
+        }
       case AuthProviderDispatchMethodConstants.RESET:
         console.log('reseting')
-        localStorage.removeItem(AUTH_KEY)
+        localStorage.clear() // clear all localstorage instead
         return defaultAuthState
       default:
         return state
