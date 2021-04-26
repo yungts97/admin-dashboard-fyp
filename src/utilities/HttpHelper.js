@@ -75,18 +75,27 @@ const HttpRequest = {
     }
   },
   Get: {
-    GetFoods: async (skip = 0) => {
-      // generate a http request config for http request
-      const HttpRequestConfig = ConfigGenerator.GetFoodsHttpRequestConfig(skip)
-
-      return await makeAxiosRequest(HttpRequestConfig)
-    },
     GetUserMe: async (token) => {
       const HttpRequestConfig = ConfigGenerator.GetUserDetailsMeHttpRequestConfig(
         token
       )
 
       return await makeV2AxiosRequest(HttpRequestConfig)
+    },
+    GetAllClinicianAssignments: async (token) => {
+      const HttpRequestConfig = ConfigGenerator.GetClinicianAssignmentsHttpRequestConfig(
+        token
+      )
+
+      return await makeV2AxiosRequest(HttpRequestConfig)
+    },
+    GetUserById: async (userId, token) => {
+      // This API always returns status 200 with null data if not found
+      const HttpRequestConfig = ConfigGenerator.GetUserByIdHttpRequestConfig(
+        token,
+        userId
+      )
+      return await makeAxiosRequest(HttpRequestConfig)
     }
   }
 }

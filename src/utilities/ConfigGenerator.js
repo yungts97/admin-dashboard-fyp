@@ -87,3 +87,22 @@ export const GetUserDetailsMeHttpRequestConfig = (token) =>
     null,
     token
   )
+
+// Gets all the user assigned to this clinician
+export const GetClinicianAssignmentsHttpRequestConfig = (token) =>
+  new Config(
+    Constant.METHOD.GET,
+    Constant.URL.CLINICIAN_ASSIGNMENTS,
+    Constant.CONTENT_TYPE.JSON,
+    null,
+    token
+  )
+
+export const GetUserByIdHttpRequestConfig = (token, userid) =>
+  new Config(
+    Constant.METHOD.GET,
+    `${Constant.URL.USER}/${userid}`,
+    Constant.CONTENT_TYPE.JSON,
+    null,
+    token
+  )
