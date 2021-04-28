@@ -26,7 +26,7 @@ export default function PatientProfileDetail ({ data, title }) {
 							{title ?? 'Untitled'}
 						</h2>
 					</div>
-					<div className='flex w-full flex-col mt-5 justify-center bg-gray-800 p-4 rounded-lg'>
+					<div className='flex w-full flex-col mt-5 justify-center bg-gray-100 dark:bg-gray-800 p-4 rounded-lg'>
 						<div className='flex w-full flex-row items-center'>
 							<img
 								alt='profil'
@@ -57,7 +57,7 @@ export default function PatientProfileDetail ({ data, title }) {
 						</div>
 					</div>
 
-					<div className='bg-gray-800 px-4 py-2 mt-3 rounded-lg text-sm'>
+					<div className='bg-gray-100 dark:bg-gray-800 px-4 py-2 mt-3 rounded-lg text-sm'>
 						<div className='flex w-full flex-row dark-enabled-text items-center justify-between'>
 							<p>Date of birth:</p>
 							<p>{data.profile?.date_of_birth ?? 'unknown'}</p>
@@ -75,7 +75,7 @@ export default function PatientProfileDetail ({ data, title }) {
 							<p>{EthnicityText[data.profile?.ethnicity] ?? 'unknown'}</p>
 						</div>
 					</div>
-					<div className='bg-gray-800 px-4 py-2 mt-3 rounded-lg text-sm'>
+					<div className='bg-gray-100 dark:bg-gray-800 px-4 py-2 mt-3 rounded-lg text-sm'>
 						<div className='flex w-full flex-row dark-enabled-text items-center justify-between '>
 							<p>High Blood Glucose History:</p>
 							<p>{YesNo(data.profile?.high_blood_glucose_history)}</p>
@@ -85,7 +85,7 @@ export default function PatientProfileDetail ({ data, title }) {
 							<p>{YesNo(data.profile?.high_blood_pressure_medication_history)}</p>
 						</div>
 					</div>
-					<div className='bg-gray-800 px-4 py-2 mt-3 rounded-lg'>
+					<div className='bg-gray-100 dark:bg-gray-800 px-4 py-2 mt-3 rounded-lg'>
                         <p className='dark-enabled-text font-medium text-lg'>Relatives with Diabetes</p>
 						<div className='flex w-full flex-row dark-enabled-text items-center justify-between text-sm'>
 							<p>Non - Immediate:</p>

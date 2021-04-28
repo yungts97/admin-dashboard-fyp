@@ -45,18 +45,28 @@ const PatientDetailBoard = () => {
   }, [])
 
   return (
-		<div className='grid md:grid-cols-5 md:auto-rows-auto gap-4'>
-			<div className='col-span-2 md:col-span-2'>
-				<GridContentCardContainer>
-                    <PatientProfileDetail title={'Patient Profile'} data={patientInfo}/>
-                </GridContentCardContainer>
-			</div>
-			<div className='col-span-2 md:col-span-3'>
-				<GridContentCardContainer>
-                    <PatientMealHealthBoard title={'Meal and Health History'} patientId={id}/>
-                </GridContentCardContainer>
-			</div>
-		</div>
+    <div className='grid md:grid-cols-5 md:auto-rows-auto gap-4'>
+      <div className='col-span-2 md:col-span-2'>
+        <GridContentCardContainer>
+          {!loading && (
+            <PatientProfileDetail
+              title={'Patient Profile'}
+              data={patientInfo}
+            />
+          )}
+        </GridContentCardContainer>
+      </div>
+      <div className='col-span-2 md:col-span-3'>
+        <GridContentCardContainer>
+          {!loading && (
+            <PatientMealHealthBoard
+              title={'Meal & Health History'}
+              patientId={id}
+            />
+          )}
+        </GridContentCardContainer>
+      </div>
+    </div>
   )
 }
 
