@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react'
 import GraphChart from 'components/LineGraphChart'
 import GridContentCardContainer from 'containers/Content/GridContentCardContainer'
+import MealRecord from 'models/MealRecord'
+const myfood = require('data/food.json')
+// const myhealth = require('data/health.json')
 
 const ChartsDashboard = () => {
   useEffect(() => {
-    // const array = food.map(record => new MealRecord(record))
-    // console.log(array[0].getTotalMealNutrition())
+    const array = myfood.map(record => new MealRecord(record))
+    console.log(array[0].getTotalMealNutrition())
   }, [])
 
   return (

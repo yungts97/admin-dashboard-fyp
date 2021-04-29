@@ -1,4 +1,5 @@
 import FoodItem from 'models/FoodItem'
+import FoodNutrition from 'models/FoodNutrition'
 
 export default class MealRecord {
   constructor (record) {
@@ -9,18 +10,19 @@ export default class MealRecord {
 
   getTotalMealNutrition () {
     const totalFoodNurtitions = this.foodItems.map(item => item.totalNutritionWithCalculatedWeight())
-
-    return totalFoodNurtitions.reduce((accumulator, nutrition) => {
+    const unsorted = totalFoodNurtitions.reduce((accumulator, nutrition) => {
       nutrition.forEach(element => {
         const nutritionName = element.name
         const index = accumulator.findIndex(item => item.name === nutritionName)
         if (index === -1) {
-          accumulator[nutritionName] = element.value
+          accumulator.push(new FoodNutrition(nutritionName, element.suffix, element.value))
         } else {
           accumulator[index].value += element.value
         }
       })
       return accumulator
     })
+
+    return unsorted.sort((a, b) => ('' + a.name).localeCompare(b.name))
   }
 }
