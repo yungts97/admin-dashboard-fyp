@@ -39,7 +39,7 @@ export default function ListBoxSelector ({ onChange, data, selected }) {
                             ? 'text-amber-900 bg-amber-100'
                             : 'text-gray-900'
                         }
-                          cursor-default select-none relative py-2 pl-10 pr-4`
+                          cursor-default select-none relative py-2 pl-10 pr-4 hover:bg-gray-300`
                       }
                       value={numPerPage}
                     >

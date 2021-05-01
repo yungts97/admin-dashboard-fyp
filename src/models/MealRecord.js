@@ -3,7 +3,7 @@ import FoodNutrition from 'models/FoodNutrition'
 
 export default class MealRecord {
   constructor (record) {
-    this.date = record.date_modified || record.date_created
+    this.date = new Date(record.date_modified || record.date_created)
     this.bloodGlucose = record.blood_glucose
     this.foodItems = record.food_items.map(item => new FoodItem(item))
   }
@@ -23,6 +23,7 @@ export default class MealRecord {
       return accumulator
     })
 
+    // Returns sorted nutrition
     return unsorted.sort((a, b) => ('' + a.name).localeCompare(b.name))
   }
 }
