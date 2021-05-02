@@ -1,20 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import GraphChart, {
   LineChartData,
-  LineChartDataset
+  LineChartDataset,
+  LineChartOptions
 } from 'components/LineGraphChart'
 import GridContentCardContainer from 'containers/Content/GridContentCardContainer'
 import HealthRecord from 'models/HealthRecord'
 import {
   getNumOfDaysInMonth
 } from 'utilities/DateTimeHelper'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import ContentCardContainer from 'containers/Content/ContentCardContainer'
+import { useThemeProvider } from 'providers/ThemeProvider'
+
 // const myfood = require('data/food.json')
 const myhealth = require('data/health.json')
 // const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 function processHealthRecord (date, healthRecords) {
   let earliestDate = new Date()
-  let latestDate = earliestDate
+  let latestDate
   const array = healthRecords.map(record => {
     const myrecord = new HealthRecord(record)
     earliestDate = earliestDate < myrecord.date ? earliestDate : myrecord.date
@@ -23,7 +29,7 @@ function processHealthRecord (date, healthRecords) {
   })
   const dayArray = (new Array(getNumOfDaysInMonth(date)).fill(undefined)).map((item, index) => index + 1)
   const dataArrayPerMonth = new Array(getNumOfDaysInMonth(date)).fill(undefined)
-  const monthArray = array.filter(record => record.date.getMonth() === date.getMonth())
+  const monthArray = array.filter(record => record.date.getMonth() === date.getMonth() && record.date.getFullYear() === date.getFullYear())
   monthArray.forEach(record => {
     const day = record.date.getDate()
     // if item is undefined place an empty array
@@ -54,52 +60,63 @@ function processHealthRecord (date, healthRecords) {
 
 // Main Page Component
 const ChartsDashboard = () => {
-  const [numberOfDays, setNumberOfDays] = useState([])
-  const [healthData, setHealthData] = useState([])
+  const [startDate, setStartDate] = useState(new Date())
+  const [month, setMonth] = useState(0)
+  const [numOfDays, myHealthData, smallestLargestYear] = useMemo(() => processHealthRecord(startDate, myhealth), [month])
+  // @ts-ignore
+  const [dark] = useThemeProvider()
 
   useEffect(() => {
-    // const array = myfood.map(record => new MealRecord(record))
-    const date = new Date('2020-10-10')
-    const [numOfDays, healthData, smallestLargestYear] = processHealthRecord(date, myhealth)
-    setNumberOfDays(numOfDays)
-    setHealthData(healthData)
-    console.log(smallestLargestYear)
-    console.log(healthData)
+    const lMonth = startDate.getMonth()
+    if (lMonth !== month) {
+      setMonth(lMonth)
+    }
+  }, [startDate])
+
+  useEffect(() => {
+    // Need to fetch patient data on first load
   }, [])
 
   return (
-    <div className="flex flex-col items-center">
-
+    <div className="flex flex-col min-h-screen">
+      <div>
+        <ContentCardContainer>
+          <span className="mr-1 dark-enabled-text">Record Date: </span>
+          <DatePicker
+            selected={startDate}
+            onChange={date => setStartDate(date)}
+            minDate={smallestLargestYear[0]}
+            dateFormat="dd-MM-yyyy"
+          />
+        </ContentCardContainer>
+      </div>
       {/* Grid Components */}
-      <div className="grid md:grid-cols-2 md:grid-rows-auto gap-4 w-full">
-        <div className="col-span-1 md:col-span-2">
+      <div className="flex-grow">
+        <div className="grid gap-3 md:grid-cols-2 auto-row-min">
+        <div className="col-span-1 md:col-span-2 h-72">
           <GridContentCardContainer>
-            <GraphChart />
+            <GraphChart
+              options={new LineChartOptions(dark, '', 'Day of Month', '(Minutes)', false)}
+            />
           </GridContentCardContainer>
         </div>
-        <GridContentCardContainer >
-          <GraphChart data={new LineChartData(numberOfDays, [new LineChartDataset('Physical', healthData.map(item => item?.physicalMinutes), '#6366F1')])}/>
-        </GridContentCardContainer>
-
-        <GridContentCardContainer >
-          <GraphChart data={new LineChartData(numberOfDays, [new LineChartDataset('Waist', healthData.map(item => item?.waistCircumference), '#6366F1')])}/>
-        </GridContentCardContainer>
-
-        <GridContentCardContainer >
-          <GraphChart />
-        </GridContentCardContainer>
-
-        <GridContentCardContainer >
-          <GraphChart />
-        </GridContentCardContainer>
-
-        <GridContentCardContainer >
-          <GraphChart />
-        </GridContentCardContainer>
-
-        <GridContentCardContainer >
-          <GraphChart />
-        </GridContentCardContainer>
+          <div>
+            <GridContentCardContainer >
+              <GraphChart
+                data={new LineChartData(numOfDays, [new LineChartDataset('Physical', myHealthData.map(item => item?.physicalMinutes), '#6366F1')])}
+                options={new LineChartOptions(dark, '', 'Day of Month', '(Minutes)', false)}
+              />
+            </GridContentCardContainer>
+          </div>
+          <div>
+            <GridContentCardContainer >
+              <GraphChart
+                data={new LineChartData(numOfDays, [new LineChartDataset('Waist', myHealthData.map(item => item?.waistCircumference), '#6366F1')])}
+                options={new LineChartOptions(dark, '', 'Day of Month', '(cm)')}
+              />
+            </GridContentCardContainer>
+          </div>
+        </div>
       </div>
     </div>
   )

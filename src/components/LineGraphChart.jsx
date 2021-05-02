@@ -31,39 +31,31 @@ export class LineChartData {
   }
 }
 
-// Testing Dummy Data
-const DUMMYDATA = new LineChartData(
-  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'], [
-    new LineChartDataset('My First dataset', [65, 59, 80, 81, 56, undefined, 150, 100], '#6366F1'),
-    new LineChartDataset('My Second dataset', [50, 80, 20, 10, undefined, 40, 20, 45], '#ed64a6')
-  ]
-)
-
-function initializeOption (dark) {
-  return {
-    maintainAspectRatio: false,
-    responsive: true,
-    title: {
-      display: false,
-      text: 'Sales Charts',
+export class LineChartOptions {
+  constructor (dark, title = undefined, xLabel = undefined, yLabel = undefined, maintainAspectRatio = true) {
+    this.maintainAspectRatio = maintainAspectRatio
+    this.responsive = true
+    this.title = {
+      display: !!title,
+      text: title ?? 'Chart Title',
       fontColor: dark ? '#fff' : '#000'
-    },
-    legend: {
+    }
+    this.legend = {
       labels: {
         fontColor: dark ? '#fff' : '#000'
       },
       align: 'end',
       position: 'bottom'
-    },
-    tooltips: {
+    }
+    this.tooltips = {
       mode: 'index',
       intersect: false
-    },
-    hover: {
+    }
+    this.hover = {
       mode: 'nearest',
       intersect: true
-    },
-    scales: {
+    }
+    this.scales = {
       xAxes: [
         {
           ticks: {
@@ -71,8 +63,8 @@ function initializeOption (dark) {
           },
           display: true,
           scaleLabel: {
-            display: false,
-            labelString: 'Month',
+            display: !!xLabel,
+            labelString: xLabel ?? 'X-Label',
             fontColor: dark ? '#fff' : '#000'
           },
           gridLines: {
@@ -89,12 +81,13 @@ function initializeOption (dark) {
       yAxes: [
         {
           ticks: {
-            fontColor: dark ? 'rgba(255,255,255,.7)' : 'rgba(0, 0, 0, .7)'
+            fontColor: dark ? 'rgba(255,255,255,.7)' : 'rgba(0, 0, 0, .7)',
+            beginAtZero: true
           },
           display: true,
           scaleLabel: {
-            display: false,
-            labelString: 'Value',
+            display: !!yLabel,
+            labelString: yLabel ?? 'Y-Label',
             fontColor: dark ? '#fff' : '#000'
           },
           gridLines: {
@@ -112,12 +105,20 @@ function initializeOption (dark) {
   }
 }
 
+// Testing Dummy Data
+const DUMMYDATA = new LineChartData(
+  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'], [
+    new LineChartDataset('My First dataset', [65, 59, 80, 81, 56, undefined, 150, 100], '#6366F1'),
+    new LineChartDataset('My Second dataset', [50, 80, 20, 10, undefined, 40, 20, 45], '#ed64a6')
+  ]
+)
+
 const LineGraphChart = ({ data, options }) => {
   // @ts-ignore
   const [themeState] = useThemeProvider()
   return (
-    <div className=" relative rounded-2xl h-full w-full">
-      <Line data={data || DUMMYDATA} options={options || initializeOption(themeState)}/>
+    <div className="relative rounded-2xl h-full w-full">
+      <Line data={data || DUMMYDATA} options={options || new LineChartOptions(themeState)}/>
     </div>
   )
 }

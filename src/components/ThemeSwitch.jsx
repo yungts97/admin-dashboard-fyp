@@ -28,7 +28,7 @@ const ThemeSwitch = () => {
 
             {themeState ? <p className="text-white text-xs mx-2">Dark</p> : <span className="text-white text-xs transform translate-x-8">Light</span>}
             <span
-              className={`${themeState ? 'translate-x-0 bg-white' : '-translate-x-6 bg-white'
+              className={`${themeState ? '-translate-x-1 bg-white' : '-translate-x-6 bg-white'
                 } flex w-6 h-6 transform rounded-full transition ease-in-out duration-200 justify-center items-center`}
             >
             {themeState ? <MoonIcon className="h-6 w-6  text-gray-800"/> : <SunIcon className="h-6 w-6 text-yellow-400"/>}
