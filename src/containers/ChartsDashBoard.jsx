@@ -60,6 +60,8 @@ function processHealthRecord (date, healthRecords) {
 
 // Main Page Component
 const ChartsDashboard = () => {
+  // display healthcharts if true, else mealcharts
+  const [healthCharts, setHealthCharts] = useState(true)
   const [startDate, setStartDate] = useState(new Date())
   const [month, setMonth] = useState(0)
   const [numOfDays, myHealthData, smallestLargestYear] = useMemo(() => processHealthRecord(startDate, myhealth), [month])
@@ -79,31 +81,34 @@ const ChartsDashboard = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div>
-        <ContentCardContainer>
-          <span className="mr-1 dark-enabled-text">Record Date: </span>
-          <DatePicker
-            selected={startDate}
-            onChange={date => setStartDate(date)}
-            minDate={smallestLargestYear[0]}
-            dateFormat="dd-MM-yyyy"
-          />
-        </ContentCardContainer>
-      </div>
+      <ContentCardContainer>
+        <div className="flex flex-row justify-between">
+          <div>
+            <span className="mr-1 dark-enabled-text">Record Date: </span>
+            <DatePicker
+              selected={startDate}
+              onChange={date => setStartDate(date)}
+              minDate={smallestLargestYear[0]}
+              dateFormat="dd-MM-yyyy"
+              />
+          </div>
+          <div>
+            <button
+              onClick={() => setHealthCharts(true)}
+              className={`${healthCharts ? 'bg-indigo-700' : 'bg-indigo-500'} hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded`}>Health</button>
+            <button
+              onClick={() => setHealthCharts(false)}
+              className={`${!healthCharts ? 'bg-indigo-700' : 'bg-indigo-500'} hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ml-2`}>Meals</button>
+          </div>
+        </div>
+      </ContentCardContainer>
       {/* Grid Components */}
       <div className="flex-grow">
-        <div className="grid gap-3 md:grid-cols-2 auto-row-min">
-        <div className="col-span-1 md:col-span-2 h-72">
-          <GridContentCardContainer>
-            <GraphChart
-              options={new LineChartOptions(dark, '', 'Day of Month', '(Minutes)', false)}
-            />
-          </GridContentCardContainer>
-        </div>
+      {healthCharts && <div className="grid gap-3 md:grid-cols-2 auto-row-min">
           <div>
             <GridContentCardContainer >
               <GraphChart
-                data={new LineChartData(numOfDays, [new LineChartDataset('Physical', myHealthData.map(item => item?.physicalMinutes), '#6366F1')])}
+                data={new LineChartData(numOfDays, [new LineChartDataset('Physical Exercise', myHealthData.map(item => item?.physicalMinutes), '#6366F1')])}
                 options={new LineChartOptions(dark, '', 'Day of Month', '(Minutes)', false)}
               />
             </GridContentCardContainer>
@@ -111,12 +116,12 @@ const ChartsDashboard = () => {
           <div>
             <GridContentCardContainer >
               <GraphChart
-                data={new LineChartData(numOfDays, [new LineChartDataset('Waist', myHealthData.map(item => item?.waistCircumference), '#6366F1')])}
+                data={new LineChartData(numOfDays, [new LineChartDataset('Waist Circumference', myHealthData.map(item => item?.waistCircumference), '#6366F1')])}
                 options={new LineChartOptions(dark, '', 'Day of Month', '(cm)')}
               />
             </GridContentCardContainer>
           </div>
-        </div>
+        </div>}
       </div>
     </div>
   )
