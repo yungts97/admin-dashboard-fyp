@@ -1,8 +1,6 @@
 import Axios from 'axios'
 import * as ConfigGenerator from './ConfigGenerator'
 
-export const BASE_URL = 'https://healthapp.online'
-
 export const REQUESTTYPES = {
   POST: 'post',
   GET: 'get'
@@ -96,7 +94,24 @@ const HttpRequest = {
         userId
       )
       return await makeAxiosRequest(HttpRequestConfig)
+    },
+    GetClinicianAssignedUserHealthRecords: async (userid, token) => {
+      const HttpRequestConfig = ConfigGenerator.GetClinicianAssignedUserHealthRecordsHttpRequestConfig(
+        userid,
+        token
+      )
+
+      return await makeV2AxiosRequest(HttpRequestConfig)
+    },
+    GetClinicianAssignedUserMealRecords: async (userid, token) => {
+      const HttpRequestConfig = ConfigGenerator.GetClinicianAssignedUserMealRecordsHttpRequestConfig(
+        userid,
+        token
+      )
+
+      return await makeV2AxiosRequest(HttpRequestConfig)
     }
+
   }
 }
 

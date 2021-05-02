@@ -20,6 +20,7 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    'no-unused-vars': [1],
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     'react/prop-types': [2, { ignore: ['children'] }]

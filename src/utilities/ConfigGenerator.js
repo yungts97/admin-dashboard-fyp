@@ -106,3 +106,33 @@ export const GetUserByIdHttpRequestConfig = (token, userid) =>
     null,
     token
   )
+
+// Get configuration to retrieve user Health Records
+export const GetClinicianAssignedUserHealthRecordsHttpRequestConfig = (
+  userid,
+  token
+) => {
+  const url = `${Constant.URL.CLINICIAN_ASSIGNED_USERS}${userid}/health-records/`
+  return new Config(
+    Constant.METHOD.GET,
+    url,
+    Constant.CONTENT_TYPE.JSON,
+    null,
+    token
+  )
+}
+
+// Get configuration to retrieve user Meal Records
+export const GetClinicianAssignedUserMealRecordsHttpRequestConfig = (
+  userid,
+  token
+) => {
+  const url = `${Constant.URL.CLINICIAN_ASSIGNED_USERS}${userid}/meals/`
+  return new Config(
+    Constant.METHOD.GET,
+    url,
+    Constant.CONTENT_TYPE.JSON,
+    null,
+    token
+  )
+}
