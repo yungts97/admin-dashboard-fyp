@@ -19,6 +19,8 @@ export function getNumOfDaysInMonth (dateObject) {
 
 function isLeapYear (year) {
   return !(year % 4 || (!(year % 100) && year % 400))
+}
+
 export function getDateObjFromISOString (ISOTimeString) {
   const prefixes = [1, 2, 3, 4, 5]
 

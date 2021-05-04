@@ -31,7 +31,7 @@ export default function NavSideBar () {
               iconSVG={
                 <BriefcaseIcon className="h-5 w-5"/>
               }
-              linkDescription={'Projects'}
+              linkDescription={'Projects (Testing)'}
               url={'/dashboard'}
               />
             <NavSideBarLink
