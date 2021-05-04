@@ -1,11 +1,13 @@
+/* eslint-disable no-tabs */
 import React, { Fragment, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Menu, Transition } from '@headlessui/react'
-import LogoutModal from 'components/LogoutModal'
+import ConfirmationModal from 'components/ConfirmationModal'
+import { LogoutIcon } from '@heroicons/react/outline'
 import {
-  LogoutIcon
-} from '@heroicons/react/outline'
-import { useAuthProvider, AuthProviderDispatchMethodConstants } from 'providers/AuthProvider'
+  useAuthProvider,
+  AuthProviderDispatchMethodConstants
+} from 'providers/AuthProvider'
 
 const ProfileAvatar = ({ imageSrc }) => {
   const [, dispatch] = useAuthProvider()

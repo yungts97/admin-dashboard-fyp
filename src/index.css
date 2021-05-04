@@ -18,6 +18,14 @@ code {
     .dark-enabled-text {
         @apply text-gray-500 dark:text-white;
     }
+    .border-r-1 {
+        border-right-width: 1px;
+        @apply dark:border-gray-500;
+    }
+    .border-b-1 {
+        border-bottom-width: 1px;
+        @apply dark:border-gray-500;
+    }
     .gradient-bg-1 {
         @apply bg-gradient-to-r from-blue-400 to-indigo-500;
     }

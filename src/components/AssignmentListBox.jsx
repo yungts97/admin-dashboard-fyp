@@ -1,9 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-tabs */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import ConfirmationModal from 'components/ConfirmationModal'
 import { ReactComponent as SearchLogo } from 'svgs/search.svg'
+import HttpHelper from 'utilities/HttpHelper'
+import { useAuthProvider } from 'providers/AuthProvider'
+import { AssignmentProviderDispatchMethodConstants } from 'providers/AssignmentProvider'
 import {
   ClipboardListIcon,
   CheckCircleIcon,
@@ -28,12 +32,12 @@ const defaultData = [
   { user: 'William7', type: 'Admin', date: '2021-07-21', status: 'active' }
 ]
 
-const AssignmentListBox = ({ title, data, searchable = true }) => {
+const AssignmentListBox = ({ title, data, assignmentDispatch, searchable = true }) => {
   const columns =
 		data && data.length > 0
 		  ? Object.keys(data[0])
 		  : Object.keys(defaultData[0])
-  const MYDATA = data || defaultData
+  const [MYDATA, setMYDATA] = useState(data || defaultData)
   const [currentData, setCurrentData] = useState(MYDATA)
   const defaultDtState = {
     num_item_per_page: 5,
@@ -48,18 +52,24 @@ const AssignmentListBox = ({ title, data, searchable = true }) => {
   const [dtState, setDtState] = useState(defaultDtState)
   const [currentPage, setCurrentPage] = useState(1)
   const [query, setQuery] = useState('')
+  const [show, setShow] = useState(false)
+  const [isAccept, setIsAccept] = useState(true)
+  const [targetAssignment, setTargetAssignment] = useState()
+  const [authState] = useAuthProvider()
 
+  // clear the query text
   const clearQueryText = () => {
     setQuery('')
     search('')
   }
 
+  // render the body of list box
   const renderBody = () => {
     if (MYDATA.length === 0) {
       return (
 				<div className='inline-block min-w-full rounded-lg overflow-hidden shadow-md mb-2'>
 					<div className='flex flex-col justify-center items-center bg-gray-100 dark:bg-gray-800 w-full h-20 p-4 dark-enabled-text'>
-                        <ExclamationCircleIcon className="w-8 h-8"/>
+						<ExclamationCircleIcon className='w-8 h-8' />
 						<p>Nothing to show.</p>
 					</div>
 				</div>
@@ -78,13 +88,19 @@ const AssignmentListBox = ({ title, data, searchable = true }) => {
 							</div>
 							<div className='h-10 px-5'>
 								<p className='text-sm font-medium'>Patient ID: {row.user_id}</p>
-								<p className='text-xs font-thin'>Pending</p>
+								<p className='text-xs font-thin'>Pending: {row.clinician_assignment_id}</p>
 							</div>
 							<div className='ml-5'>
-								<button className='ml-2 transition duration-300 ease-in-out transform hover:scale-125 focus:outline-none'>
+								<button
+									className='ml-2 transition duration-300 ease-in-out transform hover:scale-125 focus:outline-none'
+									// @ts-ignore
+									onClick={() => acceptAssignment(row.clinician_assignment_id)}>
 									<CheckCircleIcon className='h-8 w-8 text-green-400' />
 								</button>
-								<button className='ml-2 transition duration-300 ease-in-out transform hover:scale-125 focus:outline-none'>
+								<button
+									className='ml-2 transition duration-300 ease-in-out transform hover:scale-125 focus:outline-none'
+                                    // @ts-ignore
+                                    onClick={() => declineAssignment(row.clinician_assignment_id)}>
 									<XCircleIcon className='h-8 w-8 text-red-400' />
 								</button>
 							</div>
@@ -135,6 +151,58 @@ const AssignmentListBox = ({ title, data, searchable = true }) => {
     setCurrentPageData(dataInPage)
     setCurrentPage(page)
   }
+
+  // accept assignment handler
+  const acceptAssignment = (assignmentId) => {
+    setIsAccept(true)
+    setTargetAssignment(assignmentId)
+    toggleModal()
+  }
+
+  // decline assignment handler
+  const declineAssignment = (assignmentId) => {
+    setIsAccept(false)
+    setTargetAssignment(assignmentId)
+    toggleModal()
+  }
+
+  const assignmentHandler = async () => {
+    let res
+    if (isAccept) {
+      console.log(`Accepting assignment ${targetAssignment}`, typeof targetAssignment)
+      // API returns the assignment object as data
+      res = await HttpHelper.Get.GetClinicianAcceptAssignment(
+        targetAssignment,
+        authState.token
+      )
+    } else {
+      console.log(`Decline assignment ${targetAssignment}`, typeof targetAssignment)
+      res = await HttpHelper.Get.GetClinicianDeleteAssignment(
+        targetAssignment,
+        authState.token
+      )
+    }
+    if (!res.error) {
+      // update the local state with the new data
+      assignmentDispatch({
+        type: AssignmentProviderDispatchMethodConstants.UPDATE_ASSGINMENT,
+        payload: res.data
+      })
+      return toggleModal()
+    }
+    console.log('error')
+  }
+
+  const toggleModal = () => {
+    setShow(!show)
+  }
+
+  useEffect(() => {
+    const tempData = data || defaultData
+    setMYDATA(tempData)
+    setCurrentData(tempData)
+    setCurrentPageData(tempData.slice(0, 5))
+  }, [data])
 
   return (
 		<div className='antialiased font-san'>
@@ -196,13 +264,39 @@ const AssignmentListBox = ({ title, data, searchable = true }) => {
 					</div>
 				</div>
 			</div>
+			{isAccept
+			  ? (
+				<ConfirmationModal
+					show={show}
+					toggleModal={toggleModal}
+					title={'Assignment Confirmation'}
+					message={'Are you sure you want accept this assginment?'}
+					btnStyle={
+						'mx-2 px-4 py-2 text-sm font-medium text-gray-100 bg-green-500 border border-transparent rounded-md hover:bg-green-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
+					}
+                    onClick={assignmentHandler}
+				/>
+			    )
+			  : (
+				<ConfirmationModal
+					show={show}
+					toggleModal={toggleModal}
+					title={'Assignment Confirmation'}
+					message={'Are you sure you want decline this assginment?'}
+					btnStyle={
+						'mx-2 px-4 py-2 text-sm font-medium text-gray-100 bg-red-500 border border-transparent rounded-md hover:bg-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
+					}
+                    onClick={assignmentHandler}
+				/>
+			    )}
 		</div>
   )
 }
 
 AssignmentListBox.propTypes = {
   title: PropTypes.string,
-  data: PropTypes.object,
+  data: PropTypes.array,
+  assignmentDispatch: PropTypes.func,
   searchable: PropTypes.bool
 }
 

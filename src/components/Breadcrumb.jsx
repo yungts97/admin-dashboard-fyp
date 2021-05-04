@@ -20,27 +20,25 @@ export default function Breadcrumb () {
   }
 
   return (
-		<div className="w-full flex items-center">
-			<Link to="/">
-				<HomeIcon className="w-5 h-5 dark-enabled-text" />
+		<div className='w-full flex items-center'>
+			<Link to='/'>
+				<HomeIcon className='w-5 h-5 dark-enabled-text' />
 			</Link>
 			{paths.map((path, Indx) => {
 			  destination += `/${path}`
 			  return (
-					<>
+					<div key={Indx} className="flex  items-center">
 						{/* <span className="mx-4 text-gray-400 font-medium">/</span> */}
-                        <ChevronRightIcon className="mx-4 h-6 w-6 text-gray-400"/>
+						<ChevronRightIcon className='mx-4 h-6 w-6 text-gray-400' />
 						{/* <Link to={url}></Link> */}
 						<Link
-							key={Indx}
 							className={`dark-enabled-text font-normal text-sm ${
 								Indx + 1 === paths.length && 'font-bold'
 							}`}
-							to={destination}
-						>
+							to={destination}>
 							{pathNameHandler(path, Indx - 1)}
 						</Link>
-					</>
+					</div>
 			  )
 			})}
 		</div>

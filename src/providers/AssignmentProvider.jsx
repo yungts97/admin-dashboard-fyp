@@ -4,16 +4,10 @@ import PropTypes from 'prop-types'
 import { useAuthProvider } from 'providers/AuthProvider'
 
 const PROVIDERNAME = 'AssignmentProvider'
-const CLINICIAN_ASSIGNMENT_KEY = 'clinicianAssignment'
 export const AssignmentProviderDispatchMethodConstants = {
   SAVE_ASSGINMENT: 'saveAssignments',
-  UPDATEASSIGNMENT: 'updateAssignment',
-  RESETSTATE: 'resetState',
-  REMOVEASSIGNMENT: 'removeAssignment',
-  REFRESHFROMAPI: 'refreshFromAPI',
-  GENERATEREPORT: 'generatereport',
-  COMPLETEREPORT: 'completereport',
-  RAISEERROR: 'error'
+  UPDATE_ASSGINMENT: 'updateAssignment',
+  RESETSTATE: 'resetState'
 }
 
 const defaultAssignmentState = []
@@ -35,27 +29,16 @@ export function AssignmentProvider ({ children }) {
     console.log(`${PROVIDERNAME}: Retrieving Clinician Assignments.`)
     if (token) {
       try {
-        let assignments = localStorage.getItem(CLINICIAN_ASSIGNMENT_KEY)
-        if (assignments) {
-          console.log(`${PROVIDERNAME}: Retrieving assignments from storage.`)
-          assignments = JSON.parse(assignments)
+        console.log(`${PROVIDERNAME}: Retrieving Assignments from API.`)
+        const res = await HttpHelper.Get.GetAllClinicianAssignments(token)
+        if (res.error) {
+          throw Error(res.message)
+        } else {
           // @ts-ignore
           dispatch({
             type: AssignmentProviderDispatchMethodConstants.SAVE_ASSGINMENT,
-            payload: assignments
+            payload: res.data
           })
-        } else {
-          console.log(`${PROVIDERNAME}: Retrieving Assignments from API.`)
-          const res = await HttpHelper.Get.GetAllClinicianAssignments(token)
-          if (res.error) {
-            throw Error(res.message)
-          } else {
-            // @ts-ignore
-            dispatch({
-              type: AssignmentProviderDispatchMethodConstants.SAVE_ASSGINMENT,
-              payload: res.data
-            })
-          }
         }
       } catch (err) {
         console.error(err)
@@ -93,12 +76,21 @@ AssignmentProvider.propTypes = {
 
 function reducerClinician (state, action) {
   if (action.payload !== {}) {
+    let localrecords
+    let array
     switch (action.type) {
       case AssignmentProviderDispatchMethodConstants.SAVE_ASSGINMENT:
-        localStorage.setItem(CLINICIAN_ASSIGNMENT_KEY, JSON.stringify(action.payload))
         return action.payload
+      case AssignmentProviderDispatchMethodConstants.UPDATE_ASSGINMENT:
+        localrecords = state
+        array = localrecords.map((x) => {
+          if (x.clinician_assignment_id === action.payload.clinician_assignment_id) {
+            return action.payload
+          }
+          return x
+        })
+        return array
       case AssignmentProviderDispatchMethodConstants.RESETSTATE:
-        localStorage.removeItem(CLINICIAN_ASSIGNMENT_KEY)
         return defaultAssignmentState
       default:
         return state

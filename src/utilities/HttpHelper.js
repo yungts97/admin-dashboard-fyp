@@ -62,14 +62,6 @@ const HttpRequest = {
         password
       )
       return await makeV2AxiosRequest(HttpRequestConfig)
-    },
-    SignUp: async (email, password) => {
-      // generate a http request config for http request
-      const HttpRequestConfig = ConfigGenerator.SignUpHttpRequestConfig(
-        email,
-        password
-      )
-      return await makeV2AxiosRequest(HttpRequestConfig)
     }
   },
   Get: {
@@ -93,6 +85,30 @@ const HttpRequest = {
         token,
         userId
       )
+      return await makeAxiosRequest(HttpRequestConfig)
+    },
+    GetClinicianAcceptAssignment: async (assignId, token) => {
+      const HttpRequestConfig = ConfigGenerator.GetClinicianAcceptAssignmentHttpRequestConfig(
+        assignId,
+        token
+      )
+
+      return await makeV2AxiosRequest(HttpRequestConfig)
+    },
+    GetClinicianDeleteAssignment: async (assignId, token) => {
+      const HttpRequestConfig = ConfigGenerator.GetClinicianDeleteAssignmentHttpRequestConfig(
+        assignId,
+        token
+      )
+
+      return await makeV2AxiosRequest(HttpRequestConfig)
+    },
+    GetClinicianAssignedUserHealthProfile: async (userid, token) => {
+      const HttpRequestConfig = ConfigGenerator.GetClinicianAssignedUserHealthProfileHttpRequestConfig(
+        userid,
+        token
+      )
+
       return await makeAxiosRequest(HttpRequestConfig)
     },
     GetClinicianAssignedUserHealthRecords: async (userid, token) => {
