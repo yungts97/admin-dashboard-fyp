@@ -150,3 +150,19 @@ export const GetClinicianAssignedUserMealRecordsHttpRequestConfig = (
     token
   )
 }
+
+export const ClinicianPostTrendAnalyserGenerateReport = (params, token) => {
+  const body = {
+    selected_features: params.selected_features || [],
+    ranking_type_top_n: params.ranking_type_top_n || true,
+    ranking_ascending: params.ranking_ascending || true,
+    threshold: params.threshold || 0
+  }
+  return new Config(
+    Constant.METHOD.POST,
+      `${Constant.URL.TREND_ANALYSER}generate-report/`,
+      Constant.CONTENT_TYPE.JSON,
+      body,
+      token
+  )
+}

@@ -11,12 +11,17 @@ export default function Breadcrumb () {
   const paths = location.pathname.split('/').filter(Boolean) // split string by '/' and filter is to remove the empty string
   let destination = ''
 
+  const capitalizeFirstWord = (str) => {
+    return str.split(' ').map(w => `${w[0].toUpperCase()}${w.slice(1)}`).join(' ')
+  }
+
   const pathNameHandler = (path, prevIndx) => {
     if (!isNaN(path)) {
       const prevPath = paths[prevIndx]
       path = `${prevPath} ${path}`
     }
-    return path[0].toUpperCase() + path.slice(1)
+    const mainPath = path.replace('_', ' ')
+    return capitalizeFirstWord(mainPath)
   }
 
   return (
@@ -43,8 +48,4 @@ export default function Breadcrumb () {
 			})}
 		</div>
   )
-}
-
-Breadcrumb.propTypes = {
-  paths: PropTypes.array.isRequired
 }
