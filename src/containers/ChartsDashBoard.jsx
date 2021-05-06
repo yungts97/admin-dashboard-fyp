@@ -13,7 +13,7 @@ import { useThemeProvider } from 'providers/ThemeProvider'
 import { useAuthProvider } from 'providers/AuthProvider'
 import { BarChartDataset, ChartData, LineChartDataset, ChartOptions } from 'models/ChartModels'
 import { format } from 'date-fns'
-import { CircularProgressbarWithChildren } from 'react-circular-progressbar'
+import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import MealRecord from 'models/MealRecord'
 import { FOOD_NUTRITIONS, processNutritionName } from 'utilities/NutritionHelper'
@@ -134,6 +134,15 @@ const ChartsDashboard = () => {
     }
   }
 
+  const getElementAtEvent = element => {
+    if (!element.length) return
+
+    const { _index } = element[0]
+    const date = new Date(currentDate)
+    date.setDate(_index + 1)
+    setCurrentDate(date)
+  }
+
   useEffect(() => {
     const lMonth = currentDate.getMonth()
     if (lMonth !== month) {
@@ -211,24 +220,56 @@ const ChartsDashboard = () => {
         </div>}
 
       {/* Meal Charts only */}
-        {!healthCharts && <div className="grid gap-3 grid-cols-2 md:grid-cols-6">
-          <div className="col-span-full h-56">
-            <GridContentCardContainer >
-            <GraphChart
-                data={new ChartData(numOfMealDays, [
-                  new BarChartDataset('Blood Glucose (mmol/L)', myMealData.map(item => item?.bloodGlucose ?? 0), '#ed64a6')
-                ])}
-                options={new ChartOptions(dark, '', `Day of Month (${format(new Date(currentDate), 'MMM-yyyy')})`, '', false)}
-              />
-            </GridContentCardContainer>
+        {!healthCharts && <div>
+          {/* Upper Full Stretch Charts */}
+          <div className="grid gap-3 grid-cols-2 md:grid-cols-6 mb-4">
+            <div className="col-span-full h-56">
+              <GridContentCardContainer >
+              <GraphChart
+                  data={new ChartData(numOfMealDays, [
+                    new BarChartDataset('Blood Glucose (mmol/L)', myMealData.map(item => item?.bloodGlucose ?? 0), '#ed64a6')
+                  ])}
+                  options={new ChartOptions(dark, '', `Day of Month (${format(new Date(currentDate), 'MMM-yyyy')})`, '', false)}
+                  event={getElementAtEvent}
+                />
+              </GridContentCardContainer>
+            </div>
+
+            <div className="col-span-full h-56">
+              <GridContentCardContainer >
+              <GraphChart
+                  data={new ChartData(numOfMealDays, [
+                    new LineChartDataset('Energy (kcal)', myMealData.map(item => item?.getTotalMealNutrition().find(item => item.name === 'energy')?.value), '#ed64a6'),
+                    new LineChartDataset('Water (g)', myMealData.map(item => item?.getTotalMealNutrition().find(item => item.name === 'water')?.value), '#6366F1')
+                  ])}
+                  options={new ChartOptions(dark, '', `Day of Month (${format(new Date(currentDate), 'MMM-yyyy')})`, '', false)}
+                  event={getElementAtEvent}
+                />
+              </GridContentCardContainer>
+            </div>
           </div>
 
+          <ContentCardContainer>
+            <div className="flex flex-row justify-between items-center">
+              <span></span>
+              <span className="dark-enabled-text">Daily Nutrition Value</span>
+              <span></span>
+            </div>
+          </ContentCardContainer>
+
+          <div className="grid gap-3 grid-cols-2 md:grid-cols-6">
           {/* Map to each nutrition, will return nothing if limit greater than 0 */}
           {FOOD_NUTRITIONS.map((nutritionItem, index) => {
             const nutritionValue = ((currentMealNutrition?.find(item => item.name === nutritionItem.nutrition.nutrition_name))?.value ?? 0).toFixed(2)
             return nutritionItem.limit > 0
               ? <GridContentCardContainer key={index} >
-            <CircularProgressbarWithChildren value={nutritionValue} maxValue={nutritionItem.limit ?? 0} >
+            <CircularProgressbarWithChildren
+              value={nutritionValue}
+              maxValue={nutritionItem.limit ?? 0}
+              styles={buildStyles({
+                pathColor: nutritionValue > nutritionItem.limit && nutritionItem.restricted ? '#DC2626' : nutritionValue > nutritionItem.limit ? '#10B981' : '#6366F1'
+              })}
+            >
               <span className="dark-enabled-text">{processNutritionName(nutritionItem)}</span>
               <span className="dark-enabled-text">
                 {nutritionValue}/{nutritionItem.limit ?? ''}
@@ -238,6 +279,7 @@ const ChartsDashboard = () => {
           </GridContentCardContainer>
               : <></>
           })}
+          </div>
         </div>}
       </div>
     </div>

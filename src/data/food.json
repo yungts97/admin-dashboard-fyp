@@ -3326,14 +3326,6 @@
         "date_modified": "2020-09-24T20:18:08.792418",
         "date_deleted": null,
         "meal_id": 10,
-<<<<<<< HEAD
-        "new_food_type": "Kek",
-        "food": null,
-        "measurement": null
-      }
-    ]
-  }
-=======
         "user_id": 5,
         "blood_glucose": 6.2,
         "food_items": [{
@@ -3356,5 +3348,4 @@
             }
         ]
     }
->>>>>>> yung-dev
 ]

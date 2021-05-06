@@ -12,19 +12,20 @@ const DUMMYDATA = new ChartData(
   ]
 )
 
-const LineGraphChart = ({ data, options }) => {
+const LineGraphChart = ({ data, options, event }) => {
   // @ts-ignore
   const [themeState] = useThemeProvider()
   return (
     <div className="relative rounded-2xl h-full w-full">
-      <Bar data={data || DUMMYDATA} options={options || new ChartOptions(themeState)}/>
+      <Bar getElementAtEvent={event} data={data || DUMMYDATA} options={options || new ChartOptions(themeState)}/>
     </div>
   )
 }
 
 LineGraphChart.propTypes = {
   data: PropTypes.object.isRequired,
-  options: PropTypes.object
+  options: PropTypes.object,
+  event: PropTypes.func
 }
 
 export default LineGraphChart

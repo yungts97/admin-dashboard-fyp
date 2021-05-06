@@ -314,6 +314,6 @@ export const FOOD_NUTRITIONS = [
       nutrition_measurement_suffix: 'g'
     },
     nutrition_value: 0,
-    limit: 0
+    limit: 2000
   }
 ]
