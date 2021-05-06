@@ -216,7 +216,7 @@ const ChartsDashboard = () => {
             <GridContentCardContainer >
             <GraphChart
                 data={new ChartData(numOfMealDays, [
-                  new BarChartDataset('Blood Glucose (mmol/L)', myMealData.map(item => item?.bloodGlucose), '#ed64a6')
+                  new BarChartDataset('Blood Glucose (mmol/L)', myMealData.map(item => item?.bloodGlucose ?? 0), '#ed64a6')
                 ])}
                 options={new ChartOptions(dark, '', `Day of Month (${format(new Date(currentDate), 'MMM-yyyy')})`, '', false)}
               />
