@@ -10,13 +10,14 @@ import PatientMealHealthBoard from 'components/PatientMealHealthBoard'
 import HttpHelper from 'utilities/HttpHelper'
 import { useAuthProvider } from 'providers/AuthProvider'
 import useLoading from 'utilities/customHooks/useLoading'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 const PatientDetailBoard = () => {
   const [patientInfo, setPatientInfo] = useState({
     info: undefined,
     profile: undefined
   })
+  const history = useHistory()
   const [authState] = useAuthProvider()
   const { id } = useParams()
 
@@ -54,6 +55,7 @@ const PatientDetailBoard = () => {
               data={patientInfo}
             />
           )}
+          <button className='gradient-bg-3 text-white px-4 py-1 rounded-lg' onClick={() => history.push(`/patients/${id}/chart`)}>Chart</button>
         </GridContentCardContainer>
       </div>
       <div className='col-span-2 md:col-span-3'>

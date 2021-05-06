@@ -50,6 +50,11 @@ const CoreContainer = () => {
                 path="/patients/:id"
                 component={PatientDetailBoard}
               />
+              <ProtectedRoute
+                exact
+                path="/patients/:id/chart"
+                component={ChartsDashboard}
+              />
             </Content>
           </div>
         </div>
