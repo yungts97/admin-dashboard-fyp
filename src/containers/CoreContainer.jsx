@@ -6,6 +6,7 @@ import Content from 'containers/Content/Content'
 import TestDashBoard from 'containers/TestDashBoard'
 import ChartsDashboard from 'containers/ChartsDashBoard'
 import PatientsBoard from 'containers/PatientsBoard'
+import TrendAnalyzerBoard from 'containers/TrendAnalyzerBoard'
 import HomeBoard from 'containers/HomeBoard'
 import PatientDetailBoard from 'containers/PatientDetailBoard'
 
@@ -28,6 +29,11 @@ const CoreContainer = () => {
                 exact
                 path="/charts"
                 component={ChartsDashboard}
+              />
+              <ProtectedRoute
+                exact
+                path="/trend_analyzer"
+                component={TrendAnalyzerBoard}
               />
               <ProtectedRoute
                 exact

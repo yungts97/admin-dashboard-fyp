@@ -58,10 +58,10 @@ const Login = (props) => {
         <div className="absolute bg-black opacity-60 inset-0 z-0"></div>
         <div className="w-full px-24 z-10">
           <h1 className="text-5xl font-bold text-left tracking-wide">
-            Keep it special
+            Lorem ipsum dolor
           </h1>
           <p className="text-3xl my-4">
-            Capture your personal memory in unique way, anywhere.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat quasi ullam quod ea pariatur.
           </p>
         </div>
       </div>

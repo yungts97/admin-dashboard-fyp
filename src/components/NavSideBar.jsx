@@ -43,6 +43,13 @@ export default function NavSideBar () {
             />
             <NavSideBarLink
               iconSVG={
+                <ChartBarIcon className="h-5 w-5"/>
+              }
+              linkDescription={'Trend Analyzer'}
+              url={'/trend_analyzer'}
+            />
+            <NavSideBarLink
+              iconSVG={
                 <UsersIcon className="h-5 w-5"/>
               }
               linkDescription={'Patients'}
