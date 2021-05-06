@@ -27,6 +27,11 @@ const CoreContainer = () => {
               />
               <ProtectedRoute
                 exact
+                path="/charts/:id"
+                component={ChartsDashboard}
+              />
+              <ProtectedRoute
+                exact
                 path="/charts"
                 component={ChartsDashboard}
               />

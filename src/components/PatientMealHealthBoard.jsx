@@ -11,6 +11,7 @@ import { BASE_URL } from 'utilities/Constant'
 import MealDetailBoard from 'components/MealDetailBoard'
 import HealthDetailBoard from 'components/HealthDetailBoard'
 import useLoading from 'utilities/customHooks/useLoading'
+import { Link } from 'react-router-dom'
 
 const GRADIENT_BGS = [
   'gradient-bg-1',
@@ -210,6 +211,12 @@ const PatientMealHealthBoard = ({ title, patientId }) => {
               onClick={() => switchTab(1)}>
               Health History
             </button>
+            <Link
+              className={'px-4 py-2 mr-4 focus:outline-none '}
+              to={`/charts/${patientId}`}
+            >
+              Health Trend
+            </Link>
           </div>
         </div>
       </div>

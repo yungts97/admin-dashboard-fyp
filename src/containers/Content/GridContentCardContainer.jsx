@@ -11,6 +11,7 @@ const GridContentCardContainer = ({ children, bgcolor }) => {
 
 GridContentCardContainer.propTypes = {
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
   bgcolor: PropTypes.string
 }
 

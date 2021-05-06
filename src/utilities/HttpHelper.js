@@ -1,8 +1,6 @@
 import Axios from 'axios'
 import * as ConfigGenerator from './ConfigGenerator'
 
-export const BASE_URL = 'https://healthapp.online'
-
 export const REQUESTTYPES = {
   POST: 'post',
   GET: 'get'
@@ -136,6 +134,7 @@ const HttpRequest = {
 
       return await makeV2AxiosRequest(HttpRequestConfig)
     }
+
   }
 }
 

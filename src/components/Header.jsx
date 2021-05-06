@@ -14,16 +14,9 @@ export default function Header () {
           <div className="relative flex items-center w-full lg:w-64 h-full group">
             <Breadcrumb />
 
-            {/* <SearchLogo/>
-            <input
-              type="text"
-              className="block w-full py-1.5 pl-10 pr-4 leading-normal rounded-2xl focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500 ring-opacity-90 bg-gray-100 dark:bg-gray-800 text-gray-400 aa-input"
-              placeholder="Search"
-            /> */}
-
           </div>
         </div>
-        <div className="container relative flex w-1/4 h-full items-center justify-end">
+        <div className="container relative flex flex-row w-1/2 h-full items-center justify-end">
           <ThemeSwitch />
           <ProfileAvatar imageSrc={avatar}/>
         </div>

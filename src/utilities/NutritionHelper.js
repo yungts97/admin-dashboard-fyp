@@ -28,7 +28,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'energy',
       nutrition_measurement_suffix: 'kcal'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 2000
   },
   {
     nutrition: {
@@ -36,7 +37,9 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'fat',
       nutrition_measurement_suffix: 'g'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 78,
+    restricted: true
   },
   {
     nutrition: {
@@ -44,7 +47,19 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'saturated',
       nutrition_measurement_suffix: 'g'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 50,
+    restricted: true
+  },
+  {
+    nutrition: {
+      nutrition_code: 'FATRN',
+      nutrition_name: 'trans',
+      nutrition_measurement_suffix: 'g'
+    },
+    nutrition_value: 0,
+    limit: -1,
+    restricted: true
   },
   {
     nutrition: {
@@ -52,7 +67,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'monounsaturated',
       nutrition_measurement_suffix: 'g'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: -1
   },
   {
     nutrition: {
@@ -60,7 +76,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'polyunsaturated',
       nutrition_measurement_suffix: 'g'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: -1
   },
   {
     nutrition: {
@@ -68,7 +85,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'carbs',
       nutrition_measurement_suffix: 'g'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 0
   },
   {
     nutrition: {
@@ -76,7 +94,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'fibre',
       nutrition_measurement_suffix: 'g'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 28
   },
   {
     nutrition: {
@@ -84,7 +103,9 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'sugars',
       nutrition_measurement_suffix: 'g'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 50,
+    restricted: true
   },
   {
     nutrition: {
@@ -92,7 +113,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'protein',
       nutrition_measurement_suffix: 'g'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 0
   },
   {
     nutrition: {
@@ -100,7 +122,9 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'cholestrol',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 300,
+    restricted: true
   },
   {
     nutrition: {
@@ -108,7 +132,9 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'sodium',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 2300,
+    restricted: true
   },
   {
     nutrition: {
@@ -116,7 +142,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'calcium',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 1300
   },
   {
     nutrition: {
@@ -124,7 +151,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'magnesium',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 420
   },
   {
     nutrition: {
@@ -132,7 +160,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'potassium',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 4700
   },
   {
     nutrition: {
@@ -140,7 +169,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'iron',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 18
   },
   {
     nutrition: {
@@ -148,7 +178,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'zinc',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 11
   },
   {
     nutrition: {
@@ -156,7 +187,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'phosphorus',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 1250
   },
   {
     nutrition: {
@@ -164,7 +196,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'vitamin_a',
       nutrition_measurement_suffix: 'µg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 900
   },
   {
     nutrition: {
@@ -172,7 +205,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'vitamin_c',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 90
   },
   {
     nutrition: {
@@ -180,7 +214,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'thiamin_b1',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 1.2
   },
   {
     nutrition: {
@@ -188,7 +223,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'riboflavin_b2',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 1.3
   },
   {
     nutrition: {
@@ -196,7 +232,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'niacin_b3',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 16
   },
   {
     nutrition: {
@@ -204,7 +241,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'vitamin_b6',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 1.6
   },
   {
     nutrition: {
@@ -212,7 +250,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'folate_equivalent',
       nutrition_measurement_suffix: 'µg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 400
   },
   {
     nutrition: {
@@ -220,7 +259,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'folate_food',
       nutrition_measurement_suffix: 'µg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 400
   },
   {
     nutrition: {
@@ -228,7 +268,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'folic_acid',
       nutrition_measurement_suffix: 'µg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 0
   },
   {
     nutrition: {
@@ -236,7 +277,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'vitamin_b12',
       nutrition_measurement_suffix: 'µg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 2.4
   },
   {
     nutrition: {
@@ -244,7 +286,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'vitamin_d',
       nutrition_measurement_suffix: 'µg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 20
   },
   {
     nutrition: {
@@ -252,7 +295,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'vitamin_e',
       nutrition_measurement_suffix: 'mg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 15
   },
   {
     nutrition: {
@@ -260,7 +304,8 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'vitamin_k',
       nutrition_measurement_suffix: 'µg'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 120
   },
   {
     nutrition: {
@@ -268,6 +313,7 @@ export const FOOD_NUTRITIONS = [
       nutrition_name: 'water',
       nutrition_measurement_suffix: 'g'
     },
-    nutrition_value: 0
+    nutrition_value: 0,
+    limit: 0
   }
 ]

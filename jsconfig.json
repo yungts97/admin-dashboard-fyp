@@ -5,6 +5,7 @@
     "target": "es6",
     "checkJs": true,
     "jsx": "react",
+    "resolveJsonModule": true,
     "paths": {
       
     }
