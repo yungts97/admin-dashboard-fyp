@@ -8,7 +8,6 @@ export default function NavSideBarLink ({
   url
 }) {
   const location = useLocation()
-
   return (
     <Link
       className={`w-full font-thin uppercase p-4 my-2 flex items-center transition-colors duration-200 justify-start

@@ -86,7 +86,7 @@ export const FOOD_NUTRITIONS = [
       nutrition_measurement_suffix: 'g'
     },
     nutrition_value: 0,
-    limit: 0
+    limit: 300
   },
   {
     nutrition: {
@@ -114,7 +114,7 @@ export const FOOD_NUTRITIONS = [
       nutrition_measurement_suffix: 'g'
     },
     nutrition_value: 0,
-    limit: 0
+    limit: 50
   },
   {
     nutrition: {

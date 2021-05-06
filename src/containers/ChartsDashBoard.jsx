@@ -8,21 +8,31 @@ import {
 import HttpHelper from 'utilities/HttpHelper'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import MealRecord from 'models/MealRecord'
+import NutritionModal from 'components/NutritionModal'
 import ContentCardContainer from 'containers/Content/ContentCardContainer'
+import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 import { useThemeProvider } from 'providers/ThemeProvider'
 import { useAuthProvider } from 'providers/AuthProvider'
 import { BarChartDataset, ChartData, LineChartDataset, ChartOptions } from 'models/ChartModels'
 import { format } from 'date-fns'
-import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar'
-import 'react-circular-progressbar/dist/styles.css'
-import MealRecord from 'models/MealRecord'
-import { FOOD_NUTRITIONS, processNutritionName } from 'utilities/NutritionHelper'
+import { CogIcon } from '@heroicons/react/solid'
+import { useParams } from 'react-router-dom'
+import { FOOD_NUTRITIONS, processNutritionName, defaultSelectedNutrition } from 'utilities/NutritionHelper'
 
-const myfood = require('data/food.json')
-const myhealth = require('data/health.json')
+// const myfood = require('data/food.json')
+// const myhealth = require('data/health.json')
 
 function processMealRecord (date, mealRecords) {
-  const array = mealRecords.map(record => new MealRecord(record))
+  let earliestDate = new Date()
+  let latestDate
+  const array = mealRecords.map(record => {
+    const myrecord = new MealRecord(record)
+    earliestDate = earliestDate < myrecord.date ? earliestDate : myrecord.date
+    latestDate = latestDate > myrecord.date ? latestDate : myrecord.date
+    return myrecord
+  })
   const dayArray = (new Array(getNumOfDaysInMonth(date)).fill(undefined)).map((item, index) => index + 1)
   const dataArrayPerMonth = new Array(getNumOfDaysInMonth(date)).fill(undefined)
   const monthArray = array.filter(record => record.date.getMonth() === date.getMonth() && record.date.getFullYear() === date.getFullYear())
@@ -50,8 +60,7 @@ function processMealRecord (date, mealRecords) {
     })
   })
 
-  console.log(processedData)
-  return [dayArray, processedData]
+  return [dayArray, processedData, [earliestDate, latestDate]]
 }
 
 function processHealthRecord (date, healthRecords) {
@@ -105,29 +114,46 @@ const ChartsDashboard = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [month, setMonth] = useState(0)
   const [currentMealNutrition, setCurrentMealNutrition] = useState(undefined)
-  const [numOfHealthDays, myHealthData, smallestLargestHealthYear] = useMemo(() => processHealthRecord(currentDate, healthData), [month, healthData])
-  const [numOfMealDays, myMealData] = useMemo(() => processMealRecord(currentDate, mealData), [month, mealData])
+  const [numOfHealthDays, myHealthData, smallestLargestHealthYearHealth] = useMemo(() => processHealthRecord(currentDate, healthData), [month, healthData])
+  const [numOfMealDays, myMealData, smallestLargestHealthYearMeal] = useMemo(() => processMealRecord(currentDate, mealData), [month, mealData])
 
   // @ts-ignore
+  const { id } = useParams()
   const [dark] = useThemeProvider()
 
+  const [selectedNutrition] = useState(defaultSelectedNutrition)
+  const [foodNutritions, setFoodNutritions] = useState(
+    FOOD_NUTRITIONS.map((f) => ({
+      ...f,
+      selected: selectedNutrition.includes(f.nutrition.nutrition_code)
+    }))
+  )
+
+  const [visibleDialog, setVisibleDialog] = useState(false)
+  const toggleDialog = () => {
+    setVisibleDialog(!visibleDialog)
+  }
+
   async function fetchData () {
-    const userId = 0
     try {
-      // const response = await HttpHelper.Get.GetClinicianAssignedUserHealthProfileHttpRequestConfig(userId, authState.token)
-      // const response = await HttpHelper.Get.GetClinicianAssignedUserHealthRecords(userId, authState.token)
-      // const response = await HttpHelper.Get.GetClinicianAssignedUserMealRecordsHttpRequestConfig(userId, authState.token)
-      const response = {
-        data: [myhealth, myfood],
-        error: false
-      }
+      const [profile, health, meals] = await Promise.all([
+        HttpHelper.Get.GetClinicianAssignedUserHealthProfile(id, authState.token),
+        HttpHelper.Get.GetClinicianAssignedUserHealthRecords(id, authState.token),
+        HttpHelper.Get.GetClinicianAssignedUserMealRecords(id, authState.token)
+      ])
 
-      if (!response?.error) {
-        setHealthData(response.data[0])
-        setMealData(response.data[1])
+      // // Testing Only
+      // const response = {
+      //   data: [myhealth, myfood],
+      //   error: false
+      // }
 
-        // TODO: Need to get a patient's height
-        setPatientHeight(190)
+      if (profile && !health?.error && !meals?.error) {
+        setHealthData(health.data ?? [])
+        setMealData(meals.data ?? [])
+
+        // Need to get a patient's height
+        setPatientHeight(profile.height)
       }
     } catch (error) {
       console.log(error)
@@ -168,7 +194,10 @@ const ChartsDashboard = () => {
             <DatePicker
               selected={currentDate}
               onChange={date => setCurrentDate(date)}
-              minDate={smallestLargestHealthYear[0]}
+              minDate={smallestLargestHealthYearHealth[0] > smallestLargestHealthYearMeal[0]
+                ? smallestLargestHealthYearMeal[0]
+                : smallestLargestHealthYearHealth[0]
+              }
               dateFormat="dd-MM-yyyy"
               />
           </div>
@@ -212,7 +241,7 @@ const ChartsDashboard = () => {
           <div className="h-56">
             <GridContentCardContainer >
               <GraphChart
-                data={new ChartData(numOfHealthDays, [new BarChartDataset('BMI', myHealthData.map(item => (item?.weight / ((patientHeight / 100) ** 2))?.toFixed(2)), '#6366F1')])}
+                data={new ChartData(numOfHealthDays, [new BarChartDataset('BMI', myHealthData.map(item => (item?.weight / ((patientHeight / 100) ** 2))?.toFixed(2) ?? 0), '#6366F1')])}
                 options={new ChartOptions(dark, '', `Day of Month (${format(new Date(currentDate), 'MMM-yyyy')})`, '', false)}
               />
             </GridContentCardContainer>
@@ -223,7 +252,7 @@ const ChartsDashboard = () => {
         {!healthCharts && <div>
           {/* Upper Full Stretch Charts */}
           <div className="grid gap-3 grid-cols-2 md:grid-cols-6 mb-4">
-            <div className="col-span-full h-56">
+            {/* <div className="col-span-full h-56">
               <GridContentCardContainer >
               <GraphChart
                   data={new ChartData(numOfMealDays, [
@@ -233,14 +262,14 @@ const ChartsDashboard = () => {
                   event={getElementAtEvent}
                 />
               </GridContentCardContainer>
-            </div>
+            </div> */}
 
             <div className="col-span-full h-56">
               <GridContentCardContainer >
               <GraphChart
                   data={new ChartData(numOfMealDays, [
-                    new LineChartDataset('Energy (kcal)', myMealData.map(item => item?.getTotalMealNutrition().find(item => item.name === 'energy')?.value), '#ed64a6'),
-                    new LineChartDataset('Water (g)', myMealData.map(item => item?.getTotalMealNutrition().find(item => item.name === 'water')?.value), '#6366F1')
+                    new LineChartDataset('Energy (kcal)', myMealData.map(item => item?.getTotalMealNutrition().find(item => item.name === 'energy')?.value?.toFixed(2)), '#ed64a6'),
+                    new LineChartDataset('Water (g)', myMealData.map(item => item?.getTotalMealNutrition().find(item => item.name === 'water')?.value.toFixed(2)), '#6366F1')
                   ])}
                   options={new ChartOptions(dark, '', `Day of Month (${format(new Date(currentDate), 'MMM-yyyy')})`, '', false)}
                   event={getElementAtEvent}
@@ -252,16 +281,19 @@ const ChartsDashboard = () => {
           <ContentCardContainer>
             <div className="flex flex-row justify-between items-center">
               <span></span>
-              <span className="dark-enabled-text">Daily Nutrition Value</span>
-              <span></span>
+              <span className="dark-enabled-text">Daily Nutrition Value for ({format(new Date(currentDate), 'dd-MMM-yyyy')})</span>
+              <button className='dark-enabled-text' onClick={toggleDialog}>
+                <CogIcon className='h-5 w-5' />
+              </button>
             </div>
           </ContentCardContainer>
 
+          {/* Lower Progress Charts */}
           <div className="grid gap-3 grid-cols-2 md:grid-cols-6">
           {/* Map to each nutrition, will return nothing if limit greater than 0 */}
-          {FOOD_NUTRITIONS.map((nutritionItem, index) => {
+          {foodNutritions.map((nutritionItem, index) => {
             const nutritionValue = ((currentMealNutrition?.find(item => item.name === nutritionItem.nutrition.nutrition_name))?.value ?? 0).toFixed(2)
-            return nutritionItem.limit > 0
+            return nutritionItem.limit > 0 && nutritionItem.selected
               ? <GridContentCardContainer key={index} >
             <CircularProgressbarWithChildren
               value={nutritionValue}
@@ -282,6 +314,14 @@ const ChartsDashboard = () => {
           </div>
         </div>}
       </div>
+
+      <NutritionModal
+        show={visibleDialog}
+        toggleModal={toggleDialog}
+        selectedNutritions={selectedNutrition}
+        foodNutritions={foodNutritions}
+        setFoodNutritions={setFoodNutritions}
+      />
     </div>
   )
 }

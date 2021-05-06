@@ -25,16 +25,11 @@ const CoreContainer = () => {
                 path="/dashboard"
                 component={TestDashBoard}
               />
-              <ProtectedRoute
-                exact
-                path="/charts/:id"
-                component={ChartsDashboard}
-              />
-              <ProtectedRoute
+              {/* <ProtectedRoute
                 exact
                 path="/charts"
                 component={ChartsDashboard}
-              />
+              /> */}
               <ProtectedRoute
                 exact
                 path="/trend_analyzer"

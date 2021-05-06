@@ -34,13 +34,13 @@ export default function NavSideBar () {
               linkDescription={'Projects (Testing)'}
               url={'/dashboard'}
               />
-            <NavSideBarLink
+            {/* <NavSideBarLink
               iconSVG={
                 <ChartBarIcon className="h-5 w-5"/>
               }
               linkDescription={'Charts'}
               url={'/charts'}
-            />
+            /> */}
             <NavSideBarLink
               iconSVG={
                 <ChartBarIcon className="h-5 w-5"/>

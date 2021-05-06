@@ -55,7 +55,6 @@ const PatientDetailBoard = () => {
               data={patientInfo}
             />
           )}
-          <button className='gradient-bg-3 text-white px-4 py-1 rounded-lg' onClick={() => history.push(`/patients/${id}/chart`)}>Chart</button>
         </GridContentCardContainer>
       </div>
       <div className='col-span-2 md:col-span-3'>

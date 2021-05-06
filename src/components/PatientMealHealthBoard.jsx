@@ -213,9 +213,9 @@ const PatientMealHealthBoard = ({ title, patientId }) => {
             </button>
             <Link
               className={'px-4 py-2 mr-4 focus:outline-none '}
-              to={`/charts/${patientId}`}
+              to={`/patients/${patientId}/chart`}
             >
-              Health Trend
+              Charts
             </Link>
           </div>
         </div>
