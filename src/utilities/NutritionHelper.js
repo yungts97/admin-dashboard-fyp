@@ -251,7 +251,7 @@ export const FOOD_NUTRITIONS = [
       nutrition_measurement_suffix: 'µg'
     },
     nutrition_value: 0,
-    limit: 400
+    limit: -1
   },
   {
     nutrition: {

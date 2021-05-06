@@ -16,6 +16,7 @@ import { format } from 'date-fns'
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import MealRecord from 'models/MealRecord'
+import { FOOD_NUTRITIONS, processNutritionName } from 'utilities/NutritionHelper'
 
 const myfood = require('data/food.json')
 const myhealth = require('data/health.json')
@@ -26,7 +27,7 @@ function processMealRecord (date, mealRecords) {
   const dataArrayPerMonth = new Array(getNumOfDaysInMonth(date)).fill(undefined)
   const monthArray = array.filter(record => record.date.getMonth() === date.getMonth() && record.date.getFullYear() === date.getFullYear())
   monthArray.forEach(record => {
-    const day = record.date.getDate()
+    const day = record.date.getDate() - 1
     // if item is undefined place an empty array
     dataArrayPerMonth[day] = dataArrayPerMonth[day] ?? []
     dataArrayPerMonth[day].push(record)
@@ -43,7 +44,7 @@ function processMealRecord (date, mealRecords) {
     }
 
     return day.reduce((acc, item) => {
-      acc.bloodGlucose = (acc.bloodGlucose + item.bloodGlucose) / 2
+      acc.bloodGlucose = item.bloodGlucose ? (acc.bloodGlucose + item.bloodGlucose) / 2 : acc.bloodGlucose
       acc.foodItems = acc.foodItems.concat(item.foodItems)
       return acc
     })
@@ -66,7 +67,7 @@ function processHealthRecord (date, healthRecords) {
   const dataArrayPerMonth = new Array(getNumOfDaysInMonth(date)).fill(undefined)
   const monthArray = array.filter(record => record.date.getMonth() === date.getMonth() && record.date.getFullYear() === date.getFullYear())
   monthArray.forEach(record => {
-    const day = record.date.getDate()
+    const day = record.date.getDate() - 1
     // if item is undefined place an empty array
     dataArrayPerMonth[day] = dataArrayPerMonth[day] ?? []
     dataArrayPerMonth[day].push(record)
@@ -101,10 +102,11 @@ const ChartsDashboard = () => {
   const [patientHeight, setPatientHeight] = useState(1)
   const [healthData, setHealthData] = useState([])
   const [mealData, setMealData] = useState([])
-  const [startDate, setStartDate] = useState(new Date())
+  const [currentDate, setCurrentDate] = useState(new Date())
   const [month, setMonth] = useState(0)
-  const [numOfHealthDays, myHealthData, smallestLargestHealthYear] = useMemo(() => processHealthRecord(startDate, healthData), [month, healthData])
-  const [numOfMealDays, myMealData] = useMemo(() => processMealRecord(startDate, mealData), [month, mealData])
+  const [currentMealNutrition, setCurrentMealNutrition] = useState(undefined)
+  const [numOfHealthDays, myHealthData, smallestLargestHealthYear] = useMemo(() => processHealthRecord(currentDate, healthData), [month, healthData])
+  const [numOfMealDays, myMealData] = useMemo(() => processMealRecord(currentDate, mealData), [month, mealData])
 
   // @ts-ignore
   const [dark] = useThemeProvider()
@@ -133,11 +135,15 @@ const ChartsDashboard = () => {
   }
 
   useEffect(() => {
-    const lMonth = startDate.getMonth()
+    const lMonth = currentDate.getMonth()
     if (lMonth !== month) {
       setMonth(lMonth)
     }
-  }, [startDate])
+  }, [currentDate])
+
+  useEffect(() => {
+    setCurrentMealNutrition(myMealData[currentDate.getDate() - 1]?.getTotalMealNutrition())
+  }, [myMealData, currentDate])
 
   useEffect(() => {
     // Need to fetch patient data on first load
@@ -151,8 +157,8 @@ const ChartsDashboard = () => {
           <div>
             <span className="mr-1 dark-enabled-text">Record Date: </span>
             <DatePicker
-              selected={startDate}
-              onChange={date => setStartDate(date)}
+              selected={currentDate}
+              onChange={date => setCurrentDate(date)}
               minDate={smallestLargestHealthYear[0]}
               dateFormat="dd-MM-yyyy"
               />
@@ -182,7 +188,7 @@ const ChartsDashboard = () => {
                   new LineChartDataset('Weight (kg)', myHealthData.map(item => item?.weight), '#6366F1'),
                   new BarChartDataset('Waist Circumference (cm)', myHealthData.map(item => item?.waistCircumference), '#ed64a6')
                 ])}
-                options={new ChartOptions(dark, '', `Day of Month (${format(new Date(startDate), 'MMM-yyyy')})`, '', false)}
+                options={new ChartOptions(dark, '', `Day of Month (${format(new Date(currentDate), 'MMM-yyyy')})`, '', false)}
               />
             </GridContentCardContainer>
           </div>
@@ -190,7 +196,7 @@ const ChartsDashboard = () => {
             <GridContentCardContainer >
               <GraphChart
                 data={new ChartData(numOfHealthDays, [new LineChartDataset('Physical Exercise', myHealthData.map(item => item?.physicalMinutes), '#6366F1')])}
-                options={new ChartOptions(dark, '', `Day of Month (${format(new Date(startDate), 'MMM-yyyy')})`, '(Minutes)', false)}
+                options={new ChartOptions(dark, '', `Day of Month (${format(new Date(currentDate), 'MMM-yyyy')})`, '(Minutes)', false)}
               />
             </GridContentCardContainer>
           </div>
@@ -198,44 +204,40 @@ const ChartsDashboard = () => {
             <GridContentCardContainer >
               <GraphChart
                 data={new ChartData(numOfHealthDays, [new BarChartDataset('BMI', myHealthData.map(item => (item?.weight / ((patientHeight / 100) ** 2))?.toFixed(2)), '#6366F1')])}
-                options={new ChartOptions(dark, '', `Day of Month (${format(new Date(startDate), 'MMM-yyyy')})`, '', false)}
+                options={new ChartOptions(dark, '', `Day of Month (${format(new Date(currentDate), 'MMM-yyyy')})`, '', false)}
               />
             </GridContentCardContainer>
           </div>
         </div>}
 
       {/* Meal Charts only */}
-        {!healthCharts && <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
-          <GridContentCardContainer >
-            <CircularProgressbarWithChildren value={50} >
-            <span className="dark-enabled-text">66% mate</span>
-            <span className="dark-enabled-text">66% mate</span>
-            </CircularProgressbarWithChildren>
-          </GridContentCardContainer>
+        {!healthCharts && <div className="grid gap-3 grid-cols-2 md:grid-cols-6">
+          <div className="col-span-full h-56">
+            <GridContentCardContainer >
+            <GraphChart
+                data={new ChartData(numOfMealDays, [
+                  new BarChartDataset('Blood Glucose (mmol/L)', myMealData.map(item => item?.bloodGlucose), '#ed64a6')
+                ])}
+                options={new ChartOptions(dark, '', `Day of Month (${format(new Date(currentDate), 'MMM-yyyy')})`, '', false)}
+              />
+            </GridContentCardContainer>
+          </div>
 
-          <GridContentCardContainer >
-            <CircularProgressbarWithChildren value={50} >
-            <div className="dark-enabled-text">
-              <strong>66%</strong> mate
-            </div>
+          {/* Map to each nutrition, will return nothing if limit greater than 0 */}
+          {FOOD_NUTRITIONS.map((nutritionItem, index) => {
+            const nutritionValue = ((currentMealNutrition?.find(item => item.name === nutritionItem.nutrition.nutrition_name))?.value ?? 0).toFixed(2)
+            return nutritionItem.limit > 0
+              ? <GridContentCardContainer key={index} >
+            <CircularProgressbarWithChildren value={nutritionValue} maxValue={nutritionItem.limit ?? 0} >
+              <span className="dark-enabled-text">{processNutritionName(nutritionItem)}</span>
+              <span className="dark-enabled-text">
+                {nutritionValue}/{nutritionItem.limit ?? ''}
+              </span>
+              <span className="dark-enabled-text">{nutritionItem.nutrition.nutrition_measurement_suffix}</span>
             </CircularProgressbarWithChildren>
           </GridContentCardContainer>
-
-          <GridContentCardContainer >
-            <CircularProgressbarWithChildren value={150} >
-            <div className="dark-enabled-text">
-              <strong>66%</strong> mate
-            </div>
-            </CircularProgressbarWithChildren>
-          </GridContentCardContainer>
-
-          <GridContentCardContainer >
-            <CircularProgressbarWithChildren value={50} >
-            <div className="dark-enabled-text">
-              <strong>66%</strong> mate
-            </div>
-            </CircularProgressbarWithChildren>
-          </GridContentCardContainer>
+              : <></>
+          })}
         </div>}
       </div>
     </div>
