@@ -62,6 +62,13 @@ const HttpRequest = {
         password
       )
       return await makeV2AxiosRequest(HttpRequestConfig)
+    },
+    ClinicianGenerateReport: async (params, token) => {
+      const HttpRequestConfig = ConfigGenerator.ClinicianPostTrendAnalyserGenerateReport(
+        params,
+        token
+      )
+      return await makeV2AxiosRequest(HttpRequestConfig)
     }
   },
   Get: {

@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useContext, createContext } from 'react'
 import HttpHelper from 'utilities/HttpHelper'
 import PropTypes from 'prop-types'
+import { useAuthProvider } from 'providers/AuthProvider'
 
 const defaultUserState = {
   email: undefined,
@@ -28,7 +29,7 @@ export function useUserProvider () {
 
 export function UserProvider ({ children }) {
   const [state, dispatch] = useReducer(reducerUser, defaultUserState)
-  const { authState } = useContext(AuthContext) // for get the user token purpose
+  const [authState] = useAuthProvider()
 
   const getUserDetails = async (token) => {
     if (token) {
@@ -46,8 +47,8 @@ export function UserProvider ({ children }) {
   useEffect(() => {
     const fetchData = async () => {
       // when there is an authentication token
-      if (authState?.userToken) {
-        await getUserDetails(authState.userToken)
+      if (authState?.token) {
+        await getUserDetails(authState.token)
       } else {
         // when the user logs out and the authentication token is removed
         console.log(`${ProviderName}: Removing user data from storage.`)
@@ -57,7 +58,7 @@ export function UserProvider ({ children }) {
     }
     console.log(`${ProviderName}: Initiate Provider.`)
     fetchData()
-  }, [authState.userToken])
+  }, [authState.token])
 
   return (
     <UserContext.Provider value={[state, dispatch]}>

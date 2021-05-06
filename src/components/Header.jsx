@@ -12,7 +12,7 @@ export default function Header () {
       <div className="relative items-center pl-1 flex w-full lg:max-w-68 sm:pr-2 sm:ml-0">
         <div className="container relative left-0 z-50 flex w-3/4 h-full">
           <div className="relative flex items-center w-full lg:w-64 h-full group">
-            <Breadcrumb paths={['Patients', 'Patient 1']}/>
+            <Breadcrumb />
 
           </div>
         </div>
