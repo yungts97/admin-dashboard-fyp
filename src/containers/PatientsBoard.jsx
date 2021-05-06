@@ -67,7 +67,7 @@ const PatientsBoard = () => {
 										key={Indx}
 										className='px-3 py-5 border-b border-gray-200 dark:border-gray-800'>
 										<p className='dark-enabled-text whitespace-no-wrap'>
-											{row.clinician_assignment_id}
+											{row?.clinician_assignment_id}
 										</p>
 									</td>
 						    )
@@ -80,7 +80,7 @@ const PatientsBoard = () => {
 										key={Indx}
 										className='px-3 py-5 border-b border-gray-200 dark:border-gray-800'>
 										<p className='dark-enabled-text whitespace-no-wrap ml-4'>
-											{row.user_id}
+											{row?.user_id}
 										</p>
 									</td>
 						    )
@@ -96,7 +96,7 @@ const PatientsBoard = () => {
 											<div className='px-1 py-1 rounded-md bg-green-500 flex justify-center items-center'>
 												<CheckCircleIcon className='h-4 w-4 text-white' />
 												<p className='text-xs font-medium text-white'>
-													{row.assignment_accepted.toString() === 'true'
+													{row?.assignment_accepted.toString() === 'true'
 													  ? 'Accepted'
 													  : 'Declined'}
 												</p>

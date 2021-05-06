@@ -29,7 +29,8 @@ export default function MainRoute () {
                     '/charts',
                     '/trend_analyzer',
                     '/patients',
-                    '/patients/:id'
+                    '/patients/:id',
+                    '/patients/:id/chart'
                   ]}
                   component={CoreContainer}
                 />
