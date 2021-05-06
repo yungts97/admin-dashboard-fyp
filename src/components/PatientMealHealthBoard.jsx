@@ -26,7 +26,7 @@ const PatientMealHealthBoard = ({ title, patientId }) => {
   const defaultDtState = {
     num_item_per_page: 5,
     total_item: currentData.length,
-    pages: Math.ceil(currentData.length / 5),
+    pages: MYDATA.length > 0 ? Math.ceil(currentData.length / 5) : 1,
     page_limit: 5
   }
 
@@ -147,7 +147,7 @@ const PatientMealHealthBoard = ({ title, patientId }) => {
     setDtState({
       ...dtState,
       total_item: res.length,
-      pages: Math.ceil(res.length / 5)
+      pages: res.length > 0 ? Math.ceil(res.length / 5) : 1
     })
     setMYDATA(res)
     setCurrentData(res)
@@ -166,7 +166,7 @@ const PatientMealHealthBoard = ({ title, patientId }) => {
     setDtState({
       ...dtState,
       total_item: res.length,
-      pages: Math.ceil(res.length / 5)
+      pages: res.length > 0 ? Math.ceil(res.length / 5) : 1
     })
     setMYDATA(res)
     setCurrentData(res)

@@ -64,7 +64,7 @@ const Datatable = ({
   // @ts-ignore
   // eslint-disable-next-line no-unused-vars
   const [columns, setColumns] = useState(
-    data ? Object.keys(data[0]) : Object.keys(defaultData[0])
+    data && data.length > 0 ? Object.keys(data[0]) : Object.keys(defaultData[0])
   )
   // @ts-ignore
   // eslint-disable-next-line no-unused-vars
@@ -73,7 +73,7 @@ const Datatable = ({
   const defaultDtState = {
     num_item_per_page: NUM_ITEMS_PER_PAGE[0],
     total_item: currentData.length,
-    pages: Math.ceil(currentData.length / NUM_ITEMS_PER_PAGE[0]),
+    pages: data.length > 0 ? Math.ceil(currentData.length / NUM_ITEMS_PER_PAGE[0]) : 1,
     page_limit: 5
   }
 

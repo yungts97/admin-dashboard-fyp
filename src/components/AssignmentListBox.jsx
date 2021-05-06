@@ -42,7 +42,7 @@ const AssignmentListBox = ({ title, data, assignmentDispatch, searchable = true 
   const defaultDtState = {
     num_item_per_page: 5,
     total_item: currentData.length,
-    pages: Math.ceil(currentData.length / 5),
+    pages: data.length > 0 ? Math.ceil(currentData.length / 5) : 1,
     page_limit: 5
   }
 
