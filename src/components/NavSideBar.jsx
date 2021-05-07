@@ -1,7 +1,6 @@
 import NavSideBarLink from 'components/NavSideBarLink'
 import {
   ChartBarIcon,
-  BriefcaseIcon,
   HomeIcon,
   UsersIcon
 } from '@heroicons/react/solid'
@@ -26,13 +25,6 @@ export default function NavSideBar () {
               }
               linkDescription={'Home'}
               url={'/home'}
-              />
-            <NavSideBarLink
-              iconSVG={
-                <BriefcaseIcon className="h-5 w-5"/>
-              }
-              linkDescription={'Projects (Testing)'}
-              url={'/dashboard'}
               />
             {/* <NavSideBarLink
               iconSVG={

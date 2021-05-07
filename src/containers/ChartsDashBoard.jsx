@@ -148,12 +148,12 @@ const ChartsDashboard = () => {
       //   error: false
       // }
 
-      if (profile && !health?.error && !meals?.error) {
+      if (!health?.error && !meals?.error) {
         setHealthData(health.data ?? [])
         setMealData(meals.data ?? [])
 
         // Need to get a patient's height
-        setPatientHeight(profile.height)
+        setPatientHeight(profile?.height ?? undefined)
       }
     } catch (error) {
       console.log(error)

@@ -90,7 +90,7 @@ const Login = (props) => {
           <form onSubmit={handleLoginSubmit} className="sm:w-2/3 w-full px-4 lg:px-0 mx-auto">
             <div className="pb-2 pt-4">
               <input
-                type="email"
+                type="text"
                 name="email"
                 id="email"
                 required={true}

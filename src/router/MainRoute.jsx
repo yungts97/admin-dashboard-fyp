@@ -25,7 +25,6 @@ export default function MainRoute () {
                   exact
                   path={[
                     '/home',
-                    '/dashboard',
                     '/charts',
                     '/trend_analyzer',
                     '/patients',
