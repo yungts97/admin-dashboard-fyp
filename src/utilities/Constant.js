@@ -1,5 +1,5 @@
-// export const BASE_URL = 'https://www.healthapp.online/'
-export const BASE_URL = 'http://localhost:9000/'
+export const BASE_URL = 'https://www.healthapp.online/'
+// export const BASE_URL = 'http://192.168.86.23:9000/'
 
 export const METHOD = {
   GET: 'get',
