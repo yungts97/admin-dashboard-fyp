@@ -6,9 +6,14 @@ export default class MealRecord {
     this.date = new Date(record.date_modified || record.date_created)
     this.bloodGlucose = record.blood_glucose
     this.foodItems = record.food_items.map(item => new FoodItem(item))
+    this.totalNutrition = undefined
   }
 
   getTotalMealNutrition () {
+    if (this.totalNutrition) {
+      return this.totalNutrition
+    }
+
     const totalFoodNurtitions = this.foodItems.map(item => item.totalNutritionWithCalculatedWeight())
     const unsorted = totalFoodNurtitions.reduce((accumulator, nutrition) => {
       nutrition.forEach(element => {
@@ -24,6 +29,7 @@ export default class MealRecord {
     })
 
     // Returns sorted nutrition
-    return unsorted.sort((a, b) => ('' + a.name).localeCompare(b.name))
+    this.totalNutrition = unsorted.sort((a, b) => ('' + a.name).localeCompare(b.name))
+    return this.totalNutrition
   }
 }
