@@ -134,7 +134,7 @@ const MealDetailBoard = ({ data, patientId }) => {
                       </td>
                       <td className='px-3 py-2 border-b border-gray-400 text-right'>
                         <p className='dark-enabled-text whitespace-no-wrap'>
-                          {food.per_unit_measurement} {food.measurement.suffix}
+                          {food?.per_unit_measurement ?? '0'} {food.measurement?.suffix ?? 'g'}
                         </p>
                       </td>
                     </tr>
