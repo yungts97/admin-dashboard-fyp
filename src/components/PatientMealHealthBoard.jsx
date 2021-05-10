@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import HttpHelper from 'utilities/HttpHelper'
 import { getDateObjFromISOString } from 'utilities/DateTimeHelper'
 import { useAuthProvider } from 'providers/AuthProvider'
-import { ExclamationCircleIcon, DocumentTextIcon } from '@heroicons/react/solid'
+import { ExclamationCircleIcon, DocumentTextIcon, ChartBarIcon } from '@heroicons/react/solid'
 import { BASE_URL } from 'utilities/Constant'
 import MealDetailBoard from 'components/MealDetailBoard'
 import HealthDetailBoard from 'components/HealthDetailBoard'
@@ -43,6 +43,11 @@ const PatientMealHealthBoard = ({ title, patientId }) => {
   const switchTab = (val) => {
     setCurrentTab(val)
     setTargetObject(null)
+    setCurrentPage(1)
+    setDtState(defaultDtState)
+    setMYDATA([])
+    setCurrentData([])
+    setCurrentPageData([])
     if (val === 0) getPatientMeal()
     else getPatientHealth()
   }
@@ -191,10 +196,16 @@ const PatientMealHealthBoard = ({ title, patientId }) => {
     <div className='antialiased font-san flex flex-col'>
       <div className='px-4'>
         <div className='py-4'>
-          <div>
+          <div className='flex justify-between'>
             <h2 className='font-bold text-xl leading-tight dark-enabled-text'>
               {title ?? 'Untitled'}
             </h2>
+            <Link
+              className={'flex justify-center items-center px-4 py-1 focus:outline-none gradient-bg-1 text-white rounded-lg'}
+              to={`/patients/${patientId}/chart`}
+            >
+             <ChartBarIcon className='w-5 h-5 mx-2'/> View Charts
+            </Link>
           </div>
           <div className='flex w-auto flex-row mt-5 dark:bg-gray-800 bg-gray-100 dark-enabled-text'>
             <button
@@ -211,12 +222,6 @@ const PatientMealHealthBoard = ({ title, patientId }) => {
               onClick={() => switchTab(1)}>
               Health History
             </button>
-            <Link
-              className={'px-4 py-2 mr-4 focus:outline-none '}
-              to={`/patients/${patientId}/chart`}
-            >
-              Charts
-            </Link>
           </div>
         </div>
       </div>

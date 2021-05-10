@@ -69,7 +69,7 @@ const TrendAnalyzer = () => {
               <p className='px-2'>{`Selected ${localSelectedFeatures.selected_features?.length} features.`}</p>
                 )
               : (
-              <p className='px-2'>{'Nothing selcted.'}</p>
+              <p className='px-2'>{'Nothing selected.'}</p>
                 )}
           </div>
         </div>
@@ -99,25 +99,25 @@ const TrendAnalyzer = () => {
           <div className='flex justify-between py-1'>
             <p className='dark-enabled-text'>Ranking Ascending</p>
             <TwoSelections
-              choice={localSelectedFeatures.ranking_type_top_n}
+              choice={localSelectedFeatures.ranking_ascending}
               select1={false}
               select2={true}
               press1={() =>
                 dispatchSelectedFeatures({
-                  type: 'changerankingtype',
+                  type: 'changerankingascending',
                   payload: false
                 })
               }
               press2={() =>
                 dispatchSelectedFeatures({
-                  type: 'changerankingtype',
+                  type: 'changerankingascending',
                   payload: true
                 })
               }
             />
           </div>
           <div className='flex flex-col py-1'>
-            <p className='dark-enabled-text'>Ranking Ascending</p>
+            <p className='dark-enabled-text'>Threshold: <span className='text-indigo-400 px-5'>{localSelectedFeatures.threshold}</span></p>
             <input
               className='mt-2'
               min={0}
