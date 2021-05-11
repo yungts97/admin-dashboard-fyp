@@ -1,9 +1,8 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
-  useReportProvider,
-  ReportProviderDispatchMethodConstants
+  useReportProvider
 } from 'providers/ReportProvider'
 import {
   DocumentTextIcon,
@@ -70,6 +69,12 @@ const ReportBoard = () => {
     setCurrentPageData(dataInPage)
     setCurrentPage(page)
   }
+
+  useEffect(() => {
+    if (!reportState.trend.loading) {
+      setResult(getPatientInfo(selectedTab))
+    }
+  }, [reportState.trend.loading])
 
   return (
     <>
