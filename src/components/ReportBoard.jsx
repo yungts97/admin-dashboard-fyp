@@ -23,7 +23,7 @@ const ReportBoard = () => {
   const [reportState] = useReportProvider()
   const [assignmentState] = useAssignmentProvider()
   const [selectedTab, setSelectedTab] = useState(0)
-  const [result, setResult] = useState()
+  const [result, setResult] = useState([])
 
   const defaultDtState = {
     num_item_per_page: 5,
@@ -81,9 +81,7 @@ const ReportBoard = () => {
   }
 
   useEffect(() => {
-    if (!reportState.trend.loading) {
-      setResult(getPatientInfo(selectedTab))
-    }
+    setResult(getPatientInfo(selectedTab))
   }, [reportState.trend.loading])
 
   return (
