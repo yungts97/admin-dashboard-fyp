@@ -33,11 +33,37 @@ import { useParams } from 'react-router-dom'
 import {
   FOOD_NUTRITIONS,
   processNutritionName,
-  defaultSelectedNutrition
+  defaultSelectedNutrition,
+  calculateCalories,
+  nutritionCalculation
 } from 'utilities/NutritionHelper'
+import { PatientProfile } from 'models/PatientProfile'
 
 // const myfood = require('data/food.json')
 // const myhealth = require('data/health.json')
+
+function healthArrayReducer (healthArray) {
+  const accumulator = {
+    physicalMinutes: 0,
+    waistCircumference: 0,
+    weight: 0
+  }
+  let numOfDays = 0
+  const totalMonthHealth = healthArray.reduce((acc, item) => {
+    if (item) {
+      acc.physicalMinutes += item.physicalMinutes
+      acc.waistCircumference += item.waistCircumference
+      acc.weight += item.weight
+      numOfDays++
+      return acc
+    }
+    return acc
+  }, accumulator)
+  Object.keys(totalMonthHealth).forEach(key => {
+    totalMonthHealth[key] /= numOfDays === 0 ? 1 : numOfDays
+  })
+  return totalMonthHealth
+}
 
 function processMealRecord (date, mealRecords) {
   let earliestDate = new Date()
@@ -142,7 +168,6 @@ const ChartsDashboard = () => {
   // display healthcharts if true, else mealcharts
   const [authState] = useAuthProvider()
   const [healthCharts, setHealthCharts] = useState(true)
-  const [patientHeight, setPatientHeight] = useState(1)
   const [healthData, setHealthData] = useState([])
   const [mealData, setMealData] = useState([])
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -164,6 +189,10 @@ const ChartsDashboard = () => {
     month,
     mealData
   ])
+
+  const [currentPatient, setCurrentPatient] = useState(new PatientProfile(new Date(), undefined))
+  const monthHealthAverage = useMemo(() => healthArrayReducer(myHealthData), [myHealthData])
+  const dailyRecommendedCalories = useMemo(() => calculateCalories(currentPatient.getBMR(monthHealthAverage.weight), monthHealthAverage.physicalMinutes), [currentPatient, monthHealthAverage])
 
   // @ts-ignore
   const { id } = useParams()
@@ -207,7 +236,13 @@ const ChartsDashboard = () => {
         setMealData(meals.data ?? [])
 
         // Need to get a patient's height
-        setPatientHeight(profile?.height ?? undefined)
+        if (profile) {
+          setCurrentPatient(new PatientProfile(
+            new Date(profile.date_of_birth),
+            profile.gender?.toLowerCase(),
+            profile.height
+          ))
+        }
       }
     } catch (error) {
       console.log(error)
@@ -296,8 +331,8 @@ const ChartsDashboard = () => {
                 minDate={
                   smallestLargestHealthYearHealth[0] >
                   smallestLargestHealthYearMeal[0]
-                    ? smallestLargestHealthYearMeal[0]
-                    : smallestLargestHealthYearHealth[0]
+                    ? smallestLargestHealthYearMeal[0].setDate(1)
+                    : smallestLargestHealthYearHealth[0].setDate(1)
                 }
                 showMonthYearPicker
                 showFullMonthYearPicker
@@ -389,7 +424,7 @@ const ChartsDashboard = () => {
                           (item) =>
                             (
                               item?.weight /
-                              (patientHeight / 100) ** 2
+                              (currentPatient.height / 100) ** 2
                             )?.toFixed(2) ?? 0
                         ),
                         '#6366F1'
@@ -497,23 +532,23 @@ const ChartsDashboard = () => {
                       <GridContentCardContainer key={index}>
                         <CircularProgressbarWithChildren
                           value={nutritionValue}
-                          maxValue={nutritionItem.limit ?? 0}
+                          maxValue={nutritionCalculation(dailyRecommendedCalories, nutritionItem.limit) ?? 0}
                           styles={buildStyles({
                             pathColor:
-                              nutritionValue > nutritionItem.limit &&
+                              nutritionValue > nutritionCalculation(dailyRecommendedCalories, nutritionItem.limit) &&
                               nutritionItem.restricted
                                 ? '#DC2626'
-                                : nutritionValue > nutritionItem.limit
+                                : nutritionValue > nutritionCalculation(dailyRecommendedCalories, nutritionItem.limit)
                                   ? '#10B981'
                                   : '#6366F1'
                           })}>
-                          <span className='dark-enabled-text'>
+                          <span className='dark-enabled-text text-xs'>
                             {processNutritionName(nutritionItem)}
                           </span>
-                          <span className='dark-enabled-text'>
-                            {nutritionValue}/{nutritionItem.limit ?? ''}
+                          <span className='dark-enabled-text text-xs'>
+                            {nutritionValue}/{nutritionCalculation(dailyRecommendedCalories, nutritionItem.limit) ?? ''}
                           </span>
-                          <span className='dark-enabled-text'>
+                          <span className='dark-enabled-text text-xs'>
                             {
                               nutritionItem.nutrition
                                 .nutrition_measurement_suffix

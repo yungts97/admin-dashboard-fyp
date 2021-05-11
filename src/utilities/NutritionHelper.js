@@ -7,10 +7,6 @@ export const MEASUREMENT = [
   { desc: 'Bowl', value: 'bowl', measurement_conversion_to_g: 350 }
 ]
 
-export function nutritionCalculation () {
-
-}
-
 export function processNutritionName (n) {
   const word = n.nutrition.nutrition_name.split('_')
   const newWord = word.map(x =>
@@ -317,3 +313,27 @@ export const FOOD_NUTRITIONS = [
     limit: 2000
   }
 ]
+
+export function calculateCalories (BMRValue, physicalExercise) {
+  if (isNaN(BMRValue)) {
+    return 2000
+  }
+  let BMRfactor = 1
+  if (physicalExercise <= 100) {
+    BMRfactor = 1.2
+  } else if (physicalExercise > 100 && physicalExercise <= 300) {
+    BMRfactor = 1.375
+  } else if (physicalExercise > 300 && physicalExercise <= 500) {
+    BMRfactor = 1.55
+  } else if (physicalExercise > 500 && physicalExercise <= 700) {
+    BMRfactor = 1.725
+  } else {
+    BMRfactor = 1.9
+  }
+
+  return Math.round(BMRValue * BMRfactor)
+}
+
+export function nutritionCalculation (calculatedCalories, baseNutrient) {
+  return Math.round((calculatedCalories * baseNutrient) / 2000)
+}
