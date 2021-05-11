@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   useReportProvider,
   ReportProviderDispatchMethodConstants
@@ -24,19 +24,20 @@ const ReportBoard = () => {
   const [reportState] = useReportProvider()
   const [assignmentState] = useAssignmentProvider()
   const [selectedTab, setSelectedTab] = useState(0)
-  const [result, setResult] = useState(getPatientInfo())
+  const [result, setResult] = useState()
 
   const defaultDtState = {
     num_item_per_page: 5,
-    total_item: result.length,
-    pages: Math.ceil(result.length / 5),
+    total_item: 0,
+    pages: Math.ceil(0 / 5),
     page_limit: 5
   }
   const [currentPageData, setCurrentPageData] = useState(
-    result.slice(0, defaultDtState.page_limit)
+    [].slice(0, defaultDtState.page_limit)
   )
   const [dtState, setDtState] = useState(defaultDtState)
   const [currentPage, setCurrentPage] = useState(1)
+
   const history = useHistory()
 
   function getPatientInfo (resultIndex = 0) {
@@ -48,6 +49,12 @@ const ReportBoard = () => {
         if (patientIDs.includes(ass.user_id)) return ass
       })
       assignmentInfo = assignmentInfo.filter(Boolean)
+      setDtState({
+        ...dtState,
+        total_item: assignmentInfo.length,
+        pages: assignmentInfo.length > 0 ? Math.ceil(assignmentInfo.length / 5) : 1
+      })
+      setCurrentPageData(assignmentInfo.slice(0, 5))
       return assignmentInfo
     }
     return []
@@ -55,6 +62,9 @@ const ReportBoard = () => {
 
   const clickOnTab = (index) => {
     setSelectedTab(index)
+    setCurrentPage(1)
+    setDtState(defaultDtState)
+    setCurrentPageData([])
     setResult(getPatientInfo(index))
   }
 
@@ -70,6 +80,10 @@ const ReportBoard = () => {
     setCurrentPageData(dataInPage)
     setCurrentPage(page)
   }
+
+  useEffect(() => {
+    setResult(getPatientInfo(0))
+  }, [reportState])
 
   return (
     <>
