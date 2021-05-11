@@ -6,7 +6,12 @@ import PropTypes from 'prop-types'
 import HttpHelper from 'utilities/HttpHelper'
 import { getDateObjFromISOString } from 'utilities/DateTimeHelper'
 import { useAuthProvider } from 'providers/AuthProvider'
-import { ExclamationCircleIcon, DocumentTextIcon, ChartBarIcon } from '@heroicons/react/solid'
+import {
+  ExclamationCircleIcon,
+  DocumentTextIcon,
+  ChartBarIcon
+} from '@heroicons/react/solid'
+import Loader from 'components/Loader'
 import { BASE_URL } from 'utilities/Constant'
 import MealDetailBoard from 'components/MealDetailBoard'
 import HealthDetailBoard from 'components/HealthDetailBoard'
@@ -72,7 +77,11 @@ const PatientMealHealthBoard = ({ title, patientId }) => {
             return (
               <button
                 key={Indx}
-                className={`inline-block w-full rounded-lg overflow-hidden shadow-md mb-2 transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none ${targetObject?.meal_id === row.meal_id ? 'dark:bg-gray-600 bg-gray-300' : 'bg-gray-100 dark:bg-gray-800'}`}
+                className={`inline-block w-full rounded-lg overflow-hidden shadow-md mb-2 transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none ${
+                  targetObject?.meal_id === row.meal_id
+                    ? 'dark:bg-gray-600 bg-gray-300'
+                    : 'bg-gray-100 dark:bg-gray-800'
+                }`}
                 onClick={() => setTargetObject(row)}>
                 <div className='flex items-center w-full h-20 text-white'>
                   <img
@@ -109,10 +118,15 @@ const PatientMealHealthBoard = ({ title, patientId }) => {
             return (
               <button
                 key={Indx}
-                className={`inline-block w-full rounded-lg overflow-hidden shadow-md mb-2 transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none ${targetObject?.health_record_id === row.health_record_id ? 'dark:bg-gray-600 bg-gray-300' : 'bg-gray-100 dark:bg-gray-800'}`}
+                className={`inline-block w-full rounded-lg overflow-hidden shadow-md mb-2 transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none ${
+                  targetObject?.health_record_id === row.health_record_id
+                    ? 'dark:bg-gray-600 bg-gray-300'
+                    : 'bg-gray-100 dark:bg-gray-800'
+                }`}
                 onClick={() => setTargetObject(row)}>
                 <div className='flex items-center w-full h-20 text-white'>
-                  <div className={`w-20 h-20 ${GRADIENT_BGS[Indx]} flex items-center justify-center`}>
+                  <div
+                    className={`w-20 h-20 ${GRADIENT_BGS[Indx]} flex items-center justify-center`}>
                     <DocumentTextIcon className='w-10 h-10' />
                   </div>
                   <div className='px-5 flex flex-col justify-start items-start'>
@@ -201,23 +215,26 @@ const PatientMealHealthBoard = ({ title, patientId }) => {
               {title ?? 'Untitled'}
             </h2>
             <Link
-              className={'flex justify-center items-center px-4 py-1 focus:outline-none gradient-bg-1 text-white rounded-lg'}
-              to={`/patients/${patientId}/chart`}
-            >
-             <ChartBarIcon className='w-5 h-5 mx-2'/> View Charts
+              className={
+                'flex justify-center items-center px-4 py-1 focus:outline-none gradient-bg-1 text-white rounded-lg'
+              }
+              to={`/patients/${patientId}/chart`}>
+              <ChartBarIcon className='w-5 h-5 mx-2' /> View Charts
             </Link>
           </div>
           <div className='flex w-auto flex-row mt-5 dark:bg-gray-800 bg-gray-100 dark-enabled-text'>
             <button
               className={`px-4 py-2 mr-4 focus:outline-none ${
-                currentTab === 0 && 'border-b-4 border-indigo-500 text-indigo-500'
+                currentTab === 0 &&
+                'border-b-4 border-indigo-500 text-indigo-500'
               }`}
               onClick={() => switchTab(0)}>
               Meal History
             </button>
             <button
               className={`px-4 py-2 mr-4 focus:outline-none ${
-                currentTab === 1 && 'border-b-4 border-indigo-500 text-indigo-500'
+                currentTab === 1 &&
+                'border-b-4 border-indigo-500 text-indigo-500'
               }`}
               onClick={() => switchTab(1)}>
               Health History
@@ -227,89 +244,101 @@ const PatientMealHealthBoard = ({ title, patientId }) => {
       </div>
 
       {currentTab === 0
-        ? !loadingMeal && (
-            <div className='flex flex-row justify-between my-2 px-4'>
-              <div>
-                <div className='pt-2 w-72'>{renderBody()}</div>
-                <div className='flex xs:mt-0 justify-between items-center w-72'>
-                  <span className='text-xs xs:text-sm dark-enabled-text'>
-                    Showing {(currentPage - 1) * dtState.num_item_per_page + 1}{' '}
-                    to{' '}
-                    {(currentPage - 1) * dtState.num_item_per_page +
-                      currentPageData.length}{' '}
-                    of {dtState.total_item} Entries
-                  </span>
-                  <div>
-                    <button
-                      className={`text-sm bg-gray-100 border border-gray-100 dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-900 hover:bg-gray-200 dark-enabled-text font-semibold py-2 px-4 rounded-l focus:outline-none ${
-                        currentPage === 1 && 'cursor-not-allowed'
-                      }`}
-                      onClick={() => currentPageDataHandler(currentPage - 1)}
-                      disabled={currentPage === 1}>
-                      Prev
-                    </button>
-                    <button
-                      className={`text-sm bg-gray-100 border border-gray-100 dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-900 hover:bg-gray-200 dark-enabled-text font-semibold py-2 px-4 rounded-r focus:outline-none ${
-                        currentPage === dtState.pages && 'cursor-not-allowed'
-                      }`}
-                      onClick={() => currentPageDataHandler(currentPage + 1)}
-                      disabled={currentPage === dtState.pages}>
-                      Next
-                    </button>
-                  </div>
+        ? (
+            !loadingMeal
+              ? (
+          <div className='flex flex-row justify-between my-2 px-4'>
+            <div>
+              <div className='pt-2 w-72'>{renderBody()}</div>
+              <div className='flex xs:mt-0 justify-between items-center w-72'>
+                <span className='text-xs xs:text-sm dark-enabled-text'>
+                  Showing {(currentPage - 1) * dtState.num_item_per_page + 1} to{' '}
+                  {(currentPage - 1) * dtState.num_item_per_page +
+                    currentPageData.length}{' '}
+                  of {dtState.total_item} Entries
+                </span>
+                <div>
+                  <button
+                    className={`text-sm bg-gray-100 border border-gray-100 dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-900 hover:bg-gray-200 dark-enabled-text font-semibold py-2 px-4 rounded-l focus:outline-none ${
+                      currentPage === 1 && 'cursor-not-allowed'
+                    }`}
+                    onClick={() => currentPageDataHandler(currentPage - 1)}
+                    disabled={currentPage === 1}>
+                    Prev
+                  </button>
+                  <button
+                    className={`text-sm bg-gray-100 border border-gray-100 dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-900 hover:bg-gray-200 dark-enabled-text font-semibold py-2 px-4 rounded-r focus:outline-none ${
+                      currentPage === dtState.pages && 'cursor-not-allowed'
+                    }`}
+                    onClick={() => currentPageDataHandler(currentPage + 1)}
+                    disabled={currentPage === dtState.pages}>
+                    Next
+                  </button>
                 </div>
               </div>
+            </div>
 
-              {targetObject
-                ? (
-                <MealDetailBoard data={targetObject} patientId={patientId} />
-                  )
-                : (
-                <div className='flex xs:mt-0 justify-between items-center w-80'></div>
-                  )}
-            </div>
+            {targetObject
+              ? (
+              <MealDetailBoard data={targetObject} patientId={patientId} />
+                )
+              : (
+              <div className='flex xs:mt-0 justify-between items-center w-80'></div>
+                )}
+          </div>
+                )
+              : (
+          <div className='mt-10'>
+            <Loader />
+          </div>
+                )
           )
-        : !loadingHealth && (
-            <div className='flex flex-row justify-between my-2 px-4'>
+        : !loadingHealth
+            ? (
+        <div className='flex flex-row justify-between my-2 px-4'>
+          <div>
+            <div className='pt-2 w-72'>{renderBody()}</div>
+            <div className='flex xs:mt-0 justify-between items-center w-72'>
+              <span className='text-xs xs:text-sm dark-enabled-text'>
+                Showing {(currentPage - 1) * dtState.num_item_per_page + 1} to{' '}
+                {(currentPage - 1) * dtState.num_item_per_page +
+                  currentPageData.length}{' '}
+                of {dtState.total_item} Entries
+              </span>
               <div>
-                <div className='pt-2 w-72'>{renderBody()}</div>
-                <div className='flex xs:mt-0 justify-between items-center w-72'>
-                  <span className='text-xs xs:text-sm dark-enabled-text'>
-                    Showing {(currentPage - 1) * dtState.num_item_per_page + 1}{' '}
-                    to{' '}
-                    {(currentPage - 1) * dtState.num_item_per_page +
-                      currentPageData.length}{' '}
-                    of {dtState.total_item} Entries
-                  </span>
-                  <div>
-                    <button
-                      className={`text-sm bg-gray-100 border border-gray-100 dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-900 hover:bg-gray-200 dark-enabled-text font-semibold py-2 px-4 rounded-l focus:outline-none ${
-                        currentPage === 1 && 'cursor-not-allowed'
-                      }`}
-                      onClick={() => currentPageDataHandler(currentPage - 1)}
-                      disabled={currentPage === 1}>
-                      Prev
-                    </button>
-                    <button
-                      className={`text-sm bg-gray-100 border border-gray-100 dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-900 hover:bg-gray-200 dark-enabled-text font-semibold py-2 px-4 rounded-r focus:outline-none ${
-                        currentPage === dtState.pages && 'cursor-not-allowed'
-                      }`}
-                      onClick={() => currentPageDataHandler(currentPage + 1)}
-                      disabled={currentPage === dtState.pages}>
-                      Next
-                    </button>
-                  </div>
-                </div>
+                <button
+                  className={`text-sm bg-gray-100 border border-gray-100 dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-900 hover:bg-gray-200 dark-enabled-text font-semibold py-2 px-4 rounded-l focus:outline-none ${
+                    currentPage === 1 && 'cursor-not-allowed'
+                  }`}
+                  onClick={() => currentPageDataHandler(currentPage - 1)}
+                  disabled={currentPage === 1}>
+                  Prev
+                </button>
+                <button
+                  className={`text-sm bg-gray-100 border border-gray-100 dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-900 hover:bg-gray-200 dark-enabled-text font-semibold py-2 px-4 rounded-r focus:outline-none ${
+                    currentPage === dtState.pages && 'cursor-not-allowed'
+                  }`}
+                  onClick={() => currentPageDataHandler(currentPage + 1)}
+                  disabled={currentPage === dtState.pages}>
+                  Next
+                </button>
               </div>
-              {targetObject
-                ? (
-                <HealthDetailBoard data={targetObject} patientId={patientId} />
-                  )
-                : (
-                <div className='flex xs:mt-0 justify-between items-center w-80'></div>
-                  )}
             </div>
-          )}
+          </div>
+          {targetObject
+            ? (
+            <HealthDetailBoard data={targetObject} patientId={patientId} />
+              )
+            : (
+            <div className='flex xs:mt-0 justify-between items-center w-80'></div>
+              )}
+        </div>
+              )
+            : (
+        <div className='mt-10'>
+          <Loader />
+        </div>
+              )}
     </div>
   )
 }

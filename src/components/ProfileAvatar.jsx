@@ -18,7 +18,7 @@ const ProfileAvatar = ({ imageSrc }) => {
     setShow(!show)
   }
 
-  const logout = () => {
+  const logout = async () => {
     localStorage.removeItem('token')
     dispatch({ type: AuthProviderDispatchMethodConstants.RESET })
   }

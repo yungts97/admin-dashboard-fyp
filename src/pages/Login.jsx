@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import HttpHelper from 'utilities/HttpHelper'
 import { ReactComponent as AppLogo } from 'svgs/applogo.svg'
 import { ReactComponent as Spinner } from 'svgs/spinner.svg'
+import BG from 'assets/bg.jpg'
 import { useAuthProvider, AuthProviderDispatchMethodConstants } from 'providers/AuthProvider'
 import useLoading from 'utilities/customHooks/useLoading'
 
@@ -52,16 +53,16 @@ const Login = (props) => {
         // @ts-ignore
         style={{
           backgroundImage:
-            'url(https://images.unsplash.com/photo-1534801022022-6e319a11f249?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=701&q=80)'
+            `url(${BG})`
         }}
       >
         <div className="absolute bg-black opacity-60 inset-0 z-0"></div>
         <div className="w-full px-24 z-10">
           <h1 className="text-5xl font-bold text-left tracking-wide">
-            Lorem ipsum dolor
+            Welcome Back
           </h1>
           <p className="text-3xl my-4">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat quasi ullam quod ea pariatur.
+            {'It\'s nice to see you again. Log in to continue to your account.'}
           </p>
         </div>
       </div>
@@ -75,7 +76,7 @@ const Login = (props) => {
           // @ts-ignore
           style={{
             backgroundImage:
-              'url(https://images.unsplash.com/photo-1534801022022-6e319a11f249?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=701&q=80)'
+            `url(${BG})`
           }}
         >
           <div className="absolute bg-black opacity-60 inset-0 z-0"></div>
